@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🦞 OpenClaw — Trading Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<style>
+  :root {
+    --bg: #0a0b0f;
+    --surface: #12131a;
+    --surface2: #1a1b25;
+    --border: #2a2b38;
+    --text: #e8eaed;
+    --text-muted: #6b7280;
+    --text-dim: #4b5563;
+    --green: #10b981;
+    --green-bg: rgba(16, 185, 129, 0.1);
+    --red: #ef4444;
+    --red-bg: rgba(239, 68, 68, 0.1);
+    --blue: #3b82f6;
+    --blue-bg: rgba(59, 130, 246, 0.1);
+    --purple: #a855f7;
+    --purple-bg: rgba(168, 85, 247, 0.1);
+    --orange: #f59e0b;
+    --radius: 12px;
+    --font: 'Inter', system-ui, -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', 'Fira Code', monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    padding: 24px;
+    max-width: 1400px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+  .header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 32px; padding-bottom: 20px; border-bottom: 1px solid var(--border);
+  }
+  .header-left h1 { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; }
+  .header-left h1 span { color: var(--blue); }
+  .header-sub { color: var(--text-muted); font-size: 0.8rem; margin-top: 4px; font-family: var(--mono); }
+  .header-right { display: flex; gap: 8px; align-items: center; }
+  .badge { font-size: 0.7rem; font-weight: 600; padding: 4px 10px; border-radius: 20px; font-family: var(--mono); }
+  .badge-paulo { background: var(--blue-bg); color: var(--blue); border: 1px solid rgba(59,130,246,0.3); }
+  .badge-andro { background: var(--purple-bg); color: var(--purple); border: 1px solid rgba(168,85,247,0.3); }
+  .live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); display: inline-block; animation: pulse 2s infinite; margin-right: 4px; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+  .live-label { font-size: 0.7rem; color: var(--green); font-family: var(--mono); }
+  .section { margin-bottom: 28px; }
+  .section-title { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 14px; }
+  .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+  .summary-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 18px; transition: border-color 200ms ease;
+  }
+  .summary-card:hover { border-color: var(--text-dim); }
+  .summary-card .label { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 6px; }
+  .summary-card .value { font-size: 1.6rem; font-weight: 800; font-family: var(--mono); letter-spacing: -0.02em; }
+  .summary-card .detail { font-size: 0.72rem; color: var(--text-muted); margin-top: 4px; font-family: var(--mono); }
+  .agent-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media(max-width: 768px) { .agent-grid { grid-template-columns: 1fr; } }
+  .agent-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 20px; position: relative; overflow: hidden;
+  }
+  .agent-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+  .agent-card.paulo::before { background: linear-gradient(90deg, var(--blue), #60a5fa); }
+  .agent-card.andro::before { background: linear-gradient(90deg, var(--purple), #c084fc); }
+  .agent-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .agent-name { font-size: 1.1rem; font-weight: 800; }
+  .agent-name.paulo { color: var(--blue); }
+  .agent-name.andro { color: var(--purple); }
+  .agent-role { font-size: 0.68rem; color: var(--text-muted); font-family: var(--mono); }
+  .agent-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  .agent-stat .as-label { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+  .agent-stat .as-value { font-size: 1rem; font-weight: 700; font-family: var(--mono); margin-top: 2px; }
+  .positions-table {
+    width: 100%; border-collapse: collapse; background: var(--surface);
+    border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden;
+  }
+  .positions-table th {
+    background: var(--surface2); color: var(--text-muted); font-size: 0.68rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.06em; padding: 10px 14px; text-align: left;
+  }
+  .positions-table td {
+    padding: 10px 14px; border-top: 1px solid var(--border); font-size: 0.82rem;
+    font-family: var(--mono); font-variant-numeric: tabular-nums;
+  }
+  .positions-table tr:hover { background: var(--surface2); }
+  .agent-tag { font-size: 0.6rem; font-weight: 700; padding: 2px 6px; border-radius: 4px; }
+  .tag-paulo { background: var(--blue-bg); color: var(--blue); }
+  .tag-andro { background: var(--purple-bg); color: var(--purple); }
+  .chart-container {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 20px; margin-bottom: 14px;
+  }
+  .chart-container h2 { font-size: 0.85rem; font-weight: 700; margin-bottom: 14px; }
+  canvas { max-height: 300px; }
+  .charts-two { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media(max-width: 768px) { .charts-two { grid-template-columns: 1fr; } }
+  .green { color: var(--green); }
+  .red { color: var(--red); }
+  .blue { color: var(--blue); }
+  .purple { color: var(--purple); }
+  .neutral { color: var(--text); }
+  .footer {
+    color: var(--text-dim); font-size: 0.7rem; text-align: center; margin-top: 28px;
+    padding-top: 16px; border-top: 1px solid var(--border); font-family: var(--mono);
+  }
+  .loading { text-align: center; padding: 40px; color: var(--text-muted); font-family: var(--mono); }
+  .loading .spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid var(--border); border-top-color: var(--blue); border-radius: 50%; animation: spin 0.8s linear infinite; margin-right: 8px; vertical-align: middle; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>🦞 Open<span>Claw</span> Trading</h1>
+    <div class="header-sub">Depuis le 12 Feb 2026 00:01 CET · MAJ: <span id="updateTime">chargement...</span></div>
+  </div>
+  <div class="header-right">
+    <span class="live-dot"></span><span class="live-label">LIVE</span>
+    <span class="badge badge-paulo">🧠 Paulo</span>
+    <span class="badge badge-andro">⚡ Andro</span>
+  </div>
+</div>
+
+<div id="content">
+  <div class="loading"><span class="spinner"></span> Chargement des données Hyperliquid...</div>
+</div>
+
+<div class="footer">
+  🦞 OpenClaw Trading · Claudio (COO) · Paulo (Quant) · Andro (Autonome) · Road to $1,000 · Dashboard v5 LIVE
+</div>
+
+<script>
+const PAULO_WALLET = '0x73699b2aa74814b14Cb581BbF53A07A84140F942';
+const ANDRO_WALLET = '0xeBee34176A218FA517Db163DD1A7aaA944c66d86';
+const API = 'https://api.hyperliquid.xyz/info';
+const TOTAL_DEPOSIT = 317.76;
+const PAULO_ALLOC = 219.76; // 317.76 - 98 transferred to Andro
+const ANDRO_ALLOC = 98.00;
+const START_DATE = new Date('2026-02-12T00:01:00+01:00');
+
+const gridColor = '#1e1f2e';
+const tickColor = '#6b7280';
+const BLUE = '#3b82f6';
+const PURPLE = '#a855f7';
+const GREEN = '#10b981';
+const RED = '#ef4444';
+
+async function hlPost(type, params = {}) {
+  const r = await fetch(API, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ type, ...params })
+  });
+  return r.json();
+}
+
+function $(v) { return v >= 0 ? `$${v.toFixed(2)}` : `-$${Math.abs(v).toFixed(2)}`; }
+function pct(v) { return (v >= 0 ? '+' : '') + v.toFixed(1) + '%'; }
+function colorClass(v) { return v >= 0 ? 'green' : 'red'; }
+
+function getDaysBetween(start, end) {
+  const days = [];
+  const d = new Date(start);
+  d.setUTCHours(0, 0, 0, 0);
+  const e = new Date(end);
+  e.setUTCHours(0, 0, 0, 0);
+  while (d <= e) {
+    days.push(d.toISOString().slice(0, 10));
+    d.setUTCDate(d.getUTCDate() + 1);
+  }
+  return days;
+}
+
+function buildDailyPnl(fills, startTs) {
+  const days = {};
+  for (const f of fills) {
+    if (f.time < startTs) continue;
+    const day = new Date(f.time).toISOString().slice(0, 10);
+    const pnl = parseFloat(f.closedPnl || 0);
+    const fee = parseFloat(f.fee || 0);
+    if (!days[day]) days[day] = { pnl: 0, fees: 0, count: 0 };
+    days[day].pnl += pnl;
+    days[day].fees += fee;
+    days[day].count += 1;
+  }
+  return days;
+}
+
+async function loadDashboard() {
+  try {
+    const [pauloState, androState, pauloFills, androFills] = await Promise.all([
+      hlPost('clearinghouseState', { user: PAULO_WALLET }),
+      hlPost('clearinghouseState', { user: ANDRO_WALLET }),
+      hlPost('userFills', { user: PAULO_WALLET }),
+      hlPost('userFills', { user: ANDRO_WALLET }),
+    ]);
+
+    const pauloEquity = parseFloat(pauloState.marginSummary.accountValue);
+    const androEquity = parseFloat(androState.marginSummary.accountValue);
+    const totalEquity = pauloEquity + androEquity;
+
+    const pauloMarginUsed = parseFloat(pauloState.marginSummary.totalMarginUsed);
+    const androMarginUsed = parseFloat(androState.marginSummary.totalMarginUsed);
+    const pauloMarginPct = pauloEquity > 0 ? (pauloMarginUsed / pauloEquity * 100) : 0;
+    const androMarginPct = androEquity > 0 ? (androMarginUsed / androEquity * 100) : 0;
+
+    const startTs = START_DATE.getTime();
+    const pauloDaily = buildDailyPnl(pauloFills, startTs);
+    const androDaily = buildDailyPnl(androFills, startTs);
+
+    const pauloPnlPeriod = Object.values(pauloDaily).reduce((s, d) => s + d.pnl - d.fees, 0);
+    const androPnlPeriod = Object.values(androDaily).reduce((s, d) => s + d.pnl - d.fees, 0);
+    const totalPnlPeriod = pauloPnlPeriod + androPnlPeriod;
+
+    const pauloTradesPeriod = Object.values(pauloDaily).reduce((s, d) => s + d.count, 0);
+    const androTradesPeriod = Object.values(androDaily).reduce((s, d) => s + d.count, 0);
+
+    const totalPnlGlobal = totalEquity - TOTAL_DEPOSIT;
+    const pauloPnlGlobal = pauloEquity - PAULO_ALLOC;
+    const androPnlGlobal = androEquity - ANDRO_ALLOC;
+
+    // Capital curves
+    const today = new Date();
+    const dates = getDaysBetween(START_DATE, today);
+    const pauloCurve = [];
+    const androCurve = [];
+    let pauloRemaining = 0;
+    let androRemaining = 0;
+    for (let i = dates.length - 1; i >= 0; i--) {
+      const d = dates[i];
+      pauloCurve.unshift(+(pauloEquity - pauloRemaining).toFixed(2));
+      androCurve.unshift(+(androEquity - androRemaining).toFixed(2));
+      pauloRemaining += (pauloDaily[d] ? pauloDaily[d].pnl - pauloDaily[d].fees : 0);
+      androRemaining += (androDaily[d] ? androDaily[d].pnl - androDaily[d].fees : 0);
+    }
+    const totalCurve = pauloCurve.map((p, i) => +(p + androCurve[i]).toFixed(2));
+    const dateLabels = dates.map(d => { const [,m,day] = d.split('-'); return `${parseInt(day)} ${['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][parseInt(m)]}`; });
+
+    // Positions
+    const pauloPositions = (pauloState.assetPositions || [])
+      .filter(p => parseFloat(p.position.szi) !== 0)
+      .map(p => ({ ...p.position, agent: 'PAULO' }));
+    const androPositions = (androState.assetPositions || [])
+      .filter(p => parseFloat(p.position.szi) !== 0)
+      .map(p => ({ ...p.position, agent: 'ANDRO' }));
+    const allPositions = [...pauloPositions, ...androPositions];
+
+    // Activity per day
+    const pauloActivity = dates.map(d => pauloDaily[d]?.count || 0);
+    const androActivity = dates.map(d => androDaily[d]?.count || 0);
+
+    // Update time
+    document.getElementById('updateTime').textContent = new Date().toLocaleString('fr-FR', { timeZone: 'Europe/Paris', hour: '2-digit', minute: '2-digit', second: '2-digit', day: '2-digit', month: 'short', year: 'numeric' });
+
+    // Render
+    document.getElementById('content').innerHTML = `
+      <!-- GLOBAL SUMMARY -->
+      <div class="section">
+        <div class="section-title">Vue d'ensemble</div>
+        <div class="summary-grid">
+          <div class="summary-card">
+            <div class="label">Capital Total</div>
+            <div class="value neutral">${$(totalEquity)}</div>
+            <div class="detail">Paulo ${$(pauloEquity)} + Andro ${$(androEquity)}</div>
+          </div>
+          <div class="summary-card">
+            <div class="label">Total Déposé</div>
+            <div class="value neutral">${$(TOTAL_DEPOSIT)}</div>
+            <div class="detail">Andro $98 transféré depuis Paulo</div>
+          </div>
+          <div class="summary-card">
+            <div class="label">PnL Global</div>
+            <div class="value ${colorClass(totalPnlGlobal)}">${$(totalPnlGlobal)}</div>
+            <div class="detail">${pct(totalPnlGlobal / TOTAL_DEPOSIT * 100)} depuis le dépôt</div>
+          </div>
+          <div class="summary-card">
+            <div class="label">PnL Période (12 Feb→)</div>
+            <div class="value ${colorClass(totalPnlPeriod)}">${$(totalPnlPeriod)}</div>
+            <div class="detail">Paulo ${$(pauloPnlPeriod)} · Andro ${$(androPnlPeriod)}</div>
+          </div>
+          <div class="summary-card">
+            <div class="label">Positions Ouvertes</div>
+            <div class="value neutral">${allPositions.length}</div>
+            <div class="detail">Paulo ${pauloPositions.length} · Andro ${androPositions.length}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CAPITAL CHART -->
+      <div class="section">
+        <div class="section-title">📈 Évolution du Capital</div>
+        <div class="chart-container">
+          <h2>Courbes de Capital — Paulo vs Andro vs Total</h2>
+          <canvas id="capitalChart"></canvas>
+        </div>
+      </div>
+
+      <!-- AGENT COMPARISON -->
+      <div class="section">
+        <div class="section-title">🤖 Comparaison Agents</div>
+        <div class="agent-grid">
+          <div class="agent-card paulo">
+            <div class="agent-header">
+              <div>
+                <div class="agent-name paulo">🧠 Paulo</div>
+                <div class="agent-role">Agent Quant · S4/S5/S6 Pipeline</div>
+              </div>
+              <span class="badge badge-paulo">ACTIF</span>
+            </div>
+            <div class="agent-stats">
+              <div class="agent-stat"><div class="as-label">Capital</div><div class="as-value">${$(pauloEquity)}</div></div>
+              <div class="agent-stat"><div class="as-label">Alloué</div><div class="as-value">${$(PAULO_ALLOC)}</div></div>
+              <div class="agent-stat"><div class="as-label">PnL Total</div><div class="as-value ${colorClass(pauloPnlGlobal)}">${pct(pauloPnlGlobal / PAULO_ALLOC * 100)}</div></div>
+              <div class="agent-stat"><div class="as-label">Marge</div><div class="as-value">${pauloMarginPct.toFixed(1)}%</div></div>
+              <div class="agent-stat"><div class="as-label">Trades (période)</div><div class="as-value">${pauloTradesPeriod}</div></div>
+              <div class="agent-stat"><div class="as-label">PnL Période</div><div class="as-value ${colorClass(pauloPnlPeriod)}">${$(pauloPnlPeriod)}</div></div>
+            </div>
+          </div>
+          <div class="agent-card andro">
+            <div class="agent-header">
+              <div>
+                <div class="agent-name andro">⚡ Andro</div>
+                <div class="agent-role">Trader Autonome · SDK Direct</div>
+              </div>
+              <span class="badge badge-andro">ACTIF</span>
+            </div>
+            <div class="agent-stats">
+              <div class="agent-stat"><div class="as-label">Capital</div><div class="as-value">${$(androEquity)}</div></div>
+              <div class="agent-stat"><div class="as-label">Alloué</div><div class="as-value">${$(ANDRO_ALLOC)}</div></div>
+              <div class="agent-stat"><div class="as-label">PnL Total</div><div class="as-value ${colorClass(androPnlGlobal)}">${pct(androPnlGlobal / ANDRO_ALLOC * 100)}</div></div>
+              <div class="agent-stat"><div class="as-label">Marge</div><div class="as-value">${androMarginPct.toFixed(1)}%</div></div>
+              <div class="agent-stat"><div class="as-label">Trades (période)</div><div class="as-value">${androTradesPeriod}</div></div>
+              <div class="agent-stat"><div class="as-label">PnL Période</div><div class="as-value ${colorClass(androPnlPeriod)}">${$(androPnlPeriod)}</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- POSITIONS -->
+      <div class="section">
+        <div class="section-title">📍 Positions Ouvertes</div>
+        <table class="positions-table">
+          <thead><tr><th>Agent</th><th>Coin</th><th>Side</th><th>Size</th><th>Entry</th><th>uPnL</th><th>Lev</th></tr></thead>
+          <tbody>
+            ${allPositions.map(p => {
+              const szi = parseFloat(p.szi);
+              const isLong = szi > 0;
+              const upnl = parseFloat(p.unrealizedPnl);
+              const lev = p.leverage ? (p.leverage.value + '×') : '—';
+              const tagClass = p.agent === 'PAULO' ? 'tag-paulo' : 'tag-andro';
+              return `<tr>
+                <td><span class="agent-tag ${tagClass}">${p.agent}</span></td>
+                <td><strong>${p.coin}</strong></td>
+                <td class="${isLong ? 'green' : 'red'}">${isLong ? 'LONG' : 'SHORT'}</td>
+                <td>${Math.abs(szi)}</td>
+                <td>$${parseFloat(p.entryPx).toFixed(4)}</td>
+                <td class="${colorClass(upnl)}">${$(upnl)}</td>
+                <td>${lev}</td>
+              </tr>`;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- CHARTS -->
+      <div class="section">
+        <div class="section-title">📊 Performance Comparée</div>
+        <div class="charts-two">
+          <div class="chart-container"><h2>PnL Période par Agent</h2><canvas id="pnlCompare"></canvas></div>
+          <div class="chart-container"><h2>Répartition du Capital</h2><canvas id="capitalPie"></canvas></div>
+        </div>
+        <div class="charts-two">
+          <div class="chart-container"><h2>Activité Trading (nb de fills)</h2><canvas id="activityChart"></canvas></div>
+          <div class="chart-container"><h2>Marge Utilisée</h2><canvas id="marginChart"></canvas></div>
+        </div>
+      </div>
+    `;
+
+    // === CHARTS ===
+    const ttOpts = { backgroundColor: '#1a1b25', borderColor: '#2a2b38', borderWidth: 1, titleFont: { family: "'Inter'" }, bodyFont: { family: "'JetBrains Mono'" } };
+
+    // Capital
+    new Chart(document.getElementById('capitalChart'), {
+      type: 'line',
+      data: {
+        labels: dateLabels,
+        datasets: [
+          { label: 'Total', data: totalCurve, borderColor: GREEN, backgroundColor: 'rgba(16,185,129,0.08)', fill: true, tension: 0.3, pointRadius: 5, pointBackgroundColor: GREEN, borderWidth: 2.5 },
+          { label: 'Paulo', data: pauloCurve, borderColor: BLUE, backgroundColor: 'rgba(59,130,246,0.05)', fill: true, tension: 0.3, pointRadius: 5, pointBackgroundColor: BLUE, borderWidth: 2 },
+          { label: 'Andro', data: androCurve, borderColor: PURPLE, backgroundColor: 'rgba(168,85,247,0.05)', fill: true, tension: 0.3, pointRadius: 5, pointBackgroundColor: PURPLE, borderWidth: 2 },
+          { label: 'Départ', data: dateLabels.map(() => TOTAL_DEPOSIT), borderColor: '#374151', borderDash: [6, 4], pointRadius: 0, borderWidth: 1, fill: false }
+        ]
+      },
+      options: {
+        responsive: true,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: { labels: { color: tickColor, usePointStyle: true, pointStyle: 'circle', padding: 16, font: { family: "'Inter'", size: 12 } } },
+          tooltip: { ...ttOpts, callbacks: { label: ctx => `${ctx.dataset.label}: $${ctx.parsed.y.toFixed(2)}` } }
+        },
+        scales: {
+          x: { ticks: { color: tickColor }, grid: { color: gridColor } },
+          y: { ticks: { color: tickColor, callback: v => '$' + v }, grid: { color: gridColor } }
+        }
+      }
+    });
+
+    // PnL Compare
+    new Chart(document.getElementById('pnlCompare'), {
+      type: 'bar',
+      data: { labels: ['Paulo', 'Andro'], datasets: [{ label: 'PnL ($)', data: [pauloPnlPeriod, androPnlPeriod], backgroundColor: [pauloPnlPeriod >= 0 ? BLUE : RED, androPnlPeriod >= 0 ? PURPLE : RED], borderRadius: 8 }] },
+      options: { responsive: true, plugins: { legend: { display: false } }, scales: { x: { ticks: { color: tickColor }, grid: { color: gridColor } }, y: { ticks: { color: tickColor, callback: v => '$' + v }, grid: { color: gridColor } } } }
+    });
+
+    // Capital Pie
+    new Chart(document.getElementById('capitalPie'), {
+      type: 'doughnut',
+      data: { labels: ['Paulo', 'Andro'], datasets: [{ data: [pauloEquity, androEquity], backgroundColor: [BLUE, PURPLE], borderColor: '#12131a', borderWidth: 3 }] },
+      options: { responsive: true, cutout: '60%', plugins: { legend: { labels: { color: tickColor, usePointStyle: true, padding: 16 }, position: 'bottom' }, tooltip: { ...ttOpts, callbacks: { label: ctx => `${ctx.label}: $${ctx.parsed.toFixed(2)} (${((ctx.parsed / totalEquity) * 100).toFixed(0)}%)` } } } }
+    });
+
+    // Activity
+    new Chart(document.getElementById('activityChart'), {
+      type: 'bar',
+      data: { labels: dateLabels, datasets: [
+        { label: 'Paulo', data: pauloActivity, backgroundColor: 'rgba(59,130,246,0.6)', borderRadius: 6 },
+        { label: 'Andro', data: androActivity, backgroundColor: 'rgba(168,85,247,0.6)', borderRadius: 6 }
+      ]},
+      options: { responsive: true, plugins: { legend: { labels: { color: tickColor, usePointStyle: true, pointStyle: 'circle' } } }, scales: { x: { ticks: { color: tickColor }, grid: { color: gridColor } }, y: { ticks: { color: tickColor }, grid: { color: gridColor } } } }
+    });
+
+    // Margin
+    new Chart(document.getElementById('marginChart'), {
+      type: 'bar',
+      data: { labels: ['Paulo', 'Andro'], datasets: [
+        { label: 'Marge Utilisée', data: [pauloMarginPct, androMarginPct], backgroundColor: ['rgba(59,130,246,0.6)', 'rgba(168,85,247,0.6)'], borderRadius: 8 },
+        { label: 'Seuil Danger (75%)', data: [75, 75], backgroundColor: 'rgba(239,68,68,0.15)', borderRadius: 0 }
+      ]},
+      options: { responsive: true, plugins: { legend: { labels: { color: tickColor } } }, scales: { x: { stacked: false, ticks: { color: tickColor }, grid: { color: gridColor } }, y: { max: 100, ticks: { color: tickColor, callback: v => v + '%' }, grid: { color: gridColor } } } }
+    });
+
+  } catch (err) {
+    document.getElementById('content').innerHTML = `<div class="loading" style="color:var(--red);">❌ Erreur: ${err.message}<br><br><button onclick="loadDashboard()" style="padding:8px 16px;background:var(--surface);border:1px solid var(--border);color:var(--text);border-radius:8px;cursor:pointer;font-family:var(--mono);">Réessayer</button></div>`;
+  }
+}
+
+loadDashboard();
+</script>
+</body>
+</html>
