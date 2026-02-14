@@ -129,6 +129,7 @@
     <span class="live-dot"></span><span class="live-label">LIVE</span>
     <span class="badge badge-paulo">🧠 Paulo</span>
     <span class="badge badge-andro">⚡ Andro</span>
+    <span class="badge" style="background:rgba(245,158,11,0.1);color:#f59e0b;border:1px solid rgba(245,158,11,0.3);font-size:0.7rem;font-weight:600;padding:4px 10px;border-radius:20px;font-family:var(--mono);">🎯 PolyAgent</span>
   </div>
 </div>
 
@@ -137,7 +138,7 @@
 </div>
 
 <div class="footer">
-  ⚛️ Olivaris · Claudio (COO) · Paulo (Quant) · Andro (Autonome) · Road to $1,000 · Dashboard v5 LIVE
+  ⚛️ Olivaris · Claudio (COO) · Paulo (Quant) · Andro (Autonome) · PolyAgent (Predictions) · Road to $1,000 · Dashboard v6 LIVE
 </div>
 
 <script>
@@ -197,13 +198,42 @@ function buildDailyPnl(fills, startTs) {
   return days;
 }
 
+async function fetchPolymarkets() {
+  try {
+    const coins = ['BTC', 'ETH', 'SOL', 'XRP'];
+    const results = [];
+    for (const coin of coins) {
+      try {
+        const r = await fetch(`https://gamma-api.polymarket.com/markets?slug_contains=${coin.toLowerCase()}-updown-15m&active=true&closed=false&limit=1&order=end_date&ascending=false`);
+        const markets = await r.json();
+        if (markets.length > 0) {
+          const m = markets[0];
+          const prices = JSON.parse(m.outcomePrices || '[]');
+          results.push({
+            coin,
+            question: m.question,
+            upPrice: parseFloat(prices[0] || 0),
+            downPrice: parseFloat(prices[1] || 0),
+            volume: m.volumeNum || 0,
+            liquidity: m.liquidityNum || 0,
+            endDate: m.endDate,
+            spread: parseFloat(m.spread || 0),
+          });
+        }
+      } catch(e) { /* skip individual coin errors */ }
+    }
+    return results;
+  } catch(e) { return []; }
+}
+
 async function loadDashboard() {
   try {
-    const [pauloState, androState, pauloFills, androFills] = await Promise.all([
+    const [pauloState, androState, pauloFills, androFills, polyMarkets] = await Promise.all([
       hlPost('clearinghouseState', { user: PAULO_WALLET }),
       hlPost('clearinghouseState', { user: ANDRO_WALLET }),
       hlPost('userFills', { user: PAULO_WALLET }),
       hlPost('userFills', { user: ANDRO_WALLET }),
+      fetchPolymarkets(),
     ]);
 
     const pauloEquity = parseFloat(pauloState.marginSummary.accountValue);
@@ -371,6 +401,34 @@ async function loadDashboard() {
             }).join('')}
           </tbody>
         </table>
+      </div>
+
+      <!-- POLYAGENT -->
+      <div class="section">
+        <div class="section-title">🎯 PolyAgent — Prediction Markets</div>
+        <div class="agent-card" style="border-top: 3px solid var(--orange); margin-bottom: 14px;">
+          <div class="agent-header">
+            <div>
+              <div class="agent-name" style="color: var(--orange);">🎯 PolyAgent</div>
+              <div class="agent-role">Polymarket · READ-ONLY · Marchés 15min</div>
+            </div>
+            <span class="badge" style="background:rgba(245,158,11,0.1);color:#f59e0b;border:1px solid rgba(245,158,11,0.3);font-size:0.7rem;font-weight:600;padding:4px 10px;border-radius:20px;font-family:var(--mono);">OBSERVATION</span>
+          </div>
+          ${polyMarkets.length > 0 ? `
+          <table class="positions-table">
+            <thead><tr><th>Coin</th><th>Up</th><th>Down</th><th>Spread</th><th>Volume</th><th>Fin</th></tr></thead>
+            <tbody>
+              ${polyMarkets.map(m => `<tr>
+                <td><strong>${m.coin}</strong></td>
+                <td class="green">${(m.upPrice * 100).toFixed(1)}%</td>
+                <td class="red">${(m.downPrice * 100).toFixed(1)}%</td>
+                <td>${(m.spread * 100).toFixed(1)}%</td>
+                <td>$${m.volume.toFixed(0)}</td>
+                <td style="font-size:0.75rem;color:var(--text-muted)">${new Date(m.endDate).toLocaleTimeString('fr-FR', {hour:'2-digit',minute:'2-digit'})}</td>
+              </tr>`).join('')}
+            </tbody>
+          </table>` : `<div style="color:var(--text-muted);font-family:var(--mono);font-size:0.8rem;padding:10px;">Aucun marché 15min actif</div>`}
+        </div>
       </div>
 
       <!-- CHARTS -->
