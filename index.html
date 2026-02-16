@@ -155,7 +155,7 @@ const POLY_WALLET = '0x735366Ca234ebCb5f62F806eb5E66646ECaC6C3b';
 const HL_API = 'https://api.hyperliquid.xyz/info';
 const POLY_API = 'https://data-api.polymarket.com';
 const TOTAL_DEPOSIT = 317.76;
-const POLY_DEPOSIT = 50.00;
+const POLY_DEPOSIT = 70.00;
 const PAULO_ALLOC = 219.76;
 const ANDRO_ALLOC = 98.00;
 const START_DATE = new Date('2026-02-12T00:01:00+01:00');
@@ -350,8 +350,10 @@ async function loadDashboard() {
       }
     }
 
-    // Cash not in positions = POLY_DEPOSIT - polyInvested + realized gains
-    const polyTotalValue = POLY_DEPOSIT + polyPnl;
+    // Total value = current value of open positions + realized PnL from closed + remaining cash
+    // currentValue = live mark-to-market of open positions
+    // cashPnl includes realized gains/losses from resolved positions
+    const polyTotalValue = polyCurrentValue + (POLY_DEPOSIT - polyInvested + polyPnl);
     const polyPnlPct = (polyPnl / POLY_DEPOSIT) * 100;
     const polyTrades = polyActivity.length;
 
