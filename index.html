@@ -23,8 +23,6 @@
     --blue-bg: rgba(59, 130, 246, 0.1);
     --purple: #a855f7;
     --purple-bg: rgba(168, 85, 247, 0.1);
-    --orange: #f59e0b;
-    --orange-bg: rgba(245, 158, 11, 0.1);
     --radius: 12px;
     --font: 'Inter', system-ui, -apple-system, sans-serif;
     --mono: 'JetBrains Mono', 'Fira Code', monospace;
@@ -41,7 +39,7 @@
   }
   .header {
     display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 32px; padding-bottom: 20px; border-bottom: 1px solid var(--border);
+    margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--border);
   }
   .header-left h1 { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; }
   .header-left h1 span { color: var(--blue); }
@@ -50,10 +48,37 @@
   .badge { font-size: 0.7rem; font-weight: 600; padding: 4px 10px; border-radius: 20px; font-family: var(--mono); }
   .badge-paulo { background: var(--blue-bg); color: var(--blue); border: 1px solid rgba(59,130,246,0.3); }
   .badge-andro { background: var(--purple-bg); color: var(--purple); border: 1px solid rgba(168,85,247,0.3); }
-  .badge-poly { background: var(--orange-bg); color: var(--orange); border: 1px solid rgba(245,158,11,0.3); }
   .live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); display: inline-block; animation: pulse 2s infinite; margin-right: 4px; }
   @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
   .live-label { font-size: 0.7rem; color: var(--green); font-family: var(--mono); }
+
+  /* HERO PNL */
+  .hero {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 32px;
+    margin-bottom: 28px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .hero.positive::before { background: linear-gradient(90deg, var(--green), #34d399, var(--green)); }
+  .hero.negative::before { background: linear-gradient(90deg, var(--red), #f87171, var(--red)); }
+  .hero-label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 8px; }
+  .hero-value { font-size: 3.2rem; font-weight: 800; font-family: var(--mono); letter-spacing: -0.03em; }
+  .hero-detail { font-size: 0.85rem; color: var(--text-muted); margin-top: 8px; font-family: var(--mono); }
+  .hero-sub { display: flex; justify-content: center; gap: 32px; margin-top: 16px; }
+  .hero-sub-item { text-align: center; }
+  .hero-sub-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-dim); }
+  .hero-sub-value { font-size: 1.1rem; font-weight: 700; font-family: var(--mono); margin-top: 2px; }
+
   .section { margin-bottom: 28px; }
   .section-title { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 14px; }
   .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
@@ -74,12 +99,10 @@
   .agent-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
   .agent-card.paulo::before { background: linear-gradient(90deg, var(--blue), #60a5fa); }
   .agent-card.andro::before { background: linear-gradient(90deg, var(--purple), #c084fc); }
-  .agent-card.poly::before { background: linear-gradient(90deg, var(--orange), #fbbf24); }
   .agent-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
   .agent-name { font-size: 1.1rem; font-weight: 800; }
   .agent-name.paulo { color: var(--blue); }
   .agent-name.andro { color: var(--purple); }
-  .agent-name.poly { color: var(--orange); }
   .agent-role { font-size: 0.68rem; color: var(--text-muted); font-family: var(--mono); }
   .agent-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
   .agent-stat .as-label { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
@@ -100,7 +123,6 @@
   .agent-tag { font-size: 0.6rem; font-weight: 700; padding: 2px 6px; border-radius: 4px; }
   .tag-paulo { background: var(--blue-bg); color: var(--blue); }
   .tag-andro { background: var(--purple-bg); color: var(--purple); }
-  .tag-poly { background: var(--orange-bg); color: var(--orange); }
   .chart-container {
     background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
     padding: 20px; margin-bottom: 14px;
@@ -113,7 +135,6 @@
   .red { color: var(--red); }
   .blue { color: var(--blue); }
   .purple { color: var(--purple); }
-  .orange { color: var(--orange); }
   .neutral { color: var(--text); }
   .footer {
     color: var(--text-dim); font-size: 0.7rem; text-align: center; margin-top: 28px;
@@ -122,7 +143,6 @@
   .loading { text-align: center; padding: 40px; color: var(--text-muted); font-family: var(--mono); }
   .loading .spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid var(--border); border-top-color: var(--blue); border-radius: 50%; animation: spin 0.8s linear infinite; margin-right: 8px; vertical-align: middle; }
   @keyframes spin { to { transform: rotate(360deg); } }
-  .poly-title-cell { max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: var(--font); font-size: 0.78rem; }
 </style>
 </head>
 <body>
@@ -130,36 +150,33 @@
 <div class="header">
   <div class="header-left">
     <h1>⚛️ Oliv<span>aris</span> Trading</h1>
-    <div class="header-sub">Depuis le 12 Feb 2026 00:01 CET · MAJ: <span id="updateTime">chargement...</span></div>
+    <div class="header-sub">Hyperliquid · Depuis le 12 Feb 2026 · MAJ: <span id="updateTime">chargement...</span></div>
   </div>
   <div class="header-right">
     <span class="live-dot"></span><span class="live-label">LIVE</span>
     <span class="badge badge-paulo">🧠 Paulo</span>
     <span class="badge badge-andro">⚡ Andro</span>
-    <span class="badge badge-poly">🎯 PolyAgent</span>
   </div>
 </div>
 
+<div id="hero-container"></div>
+
 <div id="content">
-  <div class="loading"><span class="spinner"></span> Chargement des données...</div>
+  <div class="loading"><span class="spinner"></span> Chargement des données Hyperliquid...</div>
 </div>
 
 <div class="footer">
-  ⚛️ Olivaris · Claudio (COO) · Paulo (Quant) · Andro (Autonome) · PolyAgent (Predictions) · Road to $1,000 · Dashboard v7 LIVE
+  ⚛️ Olivaris · Claudio (COO) · Paulo (Quant) · Andro (Autonome) · Road to $1,000 · Dashboard v8
 </div>
 
 <script>
 const PAULO_WALLET = '0x73699b2aa74814b14Cb581BbF53A07A84140F942';
 const ANDRO_WALLET = '0xeBee34176A218FA517Db163DD1A7aaA944c66d86';
-const POLY_WALLET = '0x735366Ca234ebCb5f62F806eb5E66646ECaC6C3b';
 const HL_API = 'https://api.hyperliquid.xyz/info';
-const POLY_API = 'https://data-api.polymarket.com';
 const TOTAL_DEPOSIT = 317.76;
-const POLY_DEPOSIT = 70.00;
 const PAULO_ALLOC = 219.76;
 const ANDRO_ALLOC = 98.00;
 const START_DATE = new Date('2026-02-12T00:01:00+01:00');
-const POLY_START_DATE = '2026-02-15';
 
 const gridColor = '#1e1f2e';
 const tickColor = '#6b7280';
@@ -167,28 +184,7 @@ const BLUE = '#3b82f6';
 const PURPLE = '#a855f7';
 const GREEN = '#10b981';
 const RED = '#ef4444';
-const ORANGE = '#f59e0b';
 
-// --- localStorage capital history for Polymarket ---
-const POLY_HISTORY_KEY = 'olivaris_poly_capital_history';
-
-function loadPolyHistory() {
-  try { return JSON.parse(localStorage.getItem(POLY_HISTORY_KEY)) || []; }
-  catch { return []; }
-}
-
-function savePolySnapshot(date, value, invested, pnl) {
-  const history = loadPolyHistory();
-  const existing = history.findIndex(h => h.date === date);
-  const snap = { date, value: +value.toFixed(2), invested: +invested.toFixed(2), pnl: +pnl.toFixed(2), ts: Date.now() };
-  if (existing >= 0) history[existing] = snap;
-  else history.push(snap);
-  history.sort((a, b) => a.date.localeCompare(b.date));
-  localStorage.setItem(POLY_HISTORY_KEY, JSON.stringify(history));
-  return history;
-}
-
-// --- Hyperliquid helpers ---
 async function hlPost(type, params = {}) {
   const r = await fetch(HL_API, {
     method: 'POST',
@@ -198,22 +194,6 @@ async function hlPost(type, params = {}) {
   return r.json();
 }
 
-// --- Polymarket helpers ---
-async function fetchPolyPositions() {
-  try {
-    const r = await fetch(`${POLY_API}/positions?user=${POLY_WALLET}&sizeThreshold=0`);
-    return await r.json();
-  } catch { return []; }
-}
-
-async function fetchPolyActivity() {
-  try {
-    const r = await fetch(`${POLY_API}/activity?user=${POLY_WALLET}&limit=200`);
-    return await r.json();
-  } catch { return []; }
-}
-
-// --- Format helpers ---
 function $(v) { return v >= 0 ? `$${v.toFixed(2)}` : `-$${Math.abs(v).toFixed(2)}`; }
 function pct(v) { return (v >= 0 ? '+' : '') + v.toFixed(1) + '%'; }
 function colorClass(v) { return v >= 0 ? 'green' : 'red'; }
@@ -253,19 +233,16 @@ function fmtDate(d) {
 
 async function loadDashboard() {
   try {
-    const [pauloState, androState, pauloFills, androFills, polyPositions, polyActivity] = await Promise.all([
+    const [pauloState, androState, pauloFills, androFills] = await Promise.all([
       hlPost('clearinghouseState', { user: PAULO_WALLET }),
       hlPost('clearinghouseState', { user: ANDRO_WALLET }),
       hlPost('userFills', { user: PAULO_WALLET }),
       hlPost('userFills', { user: ANDRO_WALLET }),
-      fetchPolyPositions(),
-      fetchPolyActivity(),
     ]);
 
-    // --- Hyperliquid calcs ---
     const pauloEquity = parseFloat(pauloState.marginSummary.accountValue);
     const androEquity = parseFloat(androState.marginSummary.accountValue);
-    const hlEquity = pauloEquity + androEquity;
+    const totalEquity = pauloEquity + androEquity;
 
     const pauloMarginUsed = parseFloat(pauloState.marginSummary.totalMarginUsed);
     const androMarginUsed = parseFloat(androState.marginSummary.totalMarginUsed);
@@ -276,17 +253,21 @@ async function loadDashboard() {
     const pauloDaily = buildDailyPnl(pauloFills, startTs);
     const androDaily = buildDailyPnl(androFills, startTs);
 
-    const pauloPnlPeriod = Object.values(pauloDaily).reduce((s, d) => s + d.pnl - d.fees, 0);
-    const androPnlPeriod = Object.values(androDaily).reduce((s, d) => s + d.pnl - d.fees, 0);
+    const pauloRealizedPnl = Object.values(pauloDaily).reduce((s, d) => s + d.pnl - d.fees, 0);
+    const androRealizedPnl = Object.values(androDaily).reduce((s, d) => s + d.pnl - d.fees, 0);
+    const totalRealizedPnl = pauloRealizedPnl + androRealizedPnl;
 
     const pauloTradesPeriod = Object.values(pauloDaily).reduce((s, d) => s + d.count, 0);
     const androTradesPeriod = Object.values(androDaily).reduce((s, d) => s + d.count, 0);
 
     const pauloPnlGlobal = pauloEquity - PAULO_ALLOC;
     const androPnlGlobal = androEquity - ANDRO_ALLOC;
-    const hlPnlGlobal = hlEquity - TOTAL_DEPOSIT;
+    const totalPnlGlobal = totalEquity - TOTAL_DEPOSIT;
 
-    // HL Capital curves
+    // Days running
+    const daysRunning = Math.floor((Date.now() - START_DATE.getTime()) / 86400000);
+
+    // Capital curves
     const today = new Date();
     const dates = getDaysBetween(START_DATE, today);
     const pauloCurve = [];
@@ -300,129 +281,102 @@ async function loadDashboard() {
       pauloRemaining += (pauloDaily[d] ? pauloDaily[d].pnl - pauloDaily[d].fees : 0);
       androRemaining += (androDaily[d] ? androDaily[d].pnl - androDaily[d].fees : 0);
     }
-    const hlTotalCurve = pauloCurve.map((p, i) => +(p + androCurve[i]).toFixed(2));
+    const totalCurve = pauloCurve.map((p, i) => +(p + androCurve[i]).toFixed(2));
     const dateLabels = dates.map(fmtDate);
 
-    // HL Positions
+    // Positions
     const pauloPositions = (pauloState.assetPositions || [])
       .filter(p => parseFloat(p.position.szi) !== 0)
       .map(p => ({ ...p.position, agent: 'PAULO' }));
     const androPositions = (androState.assetPositions || [])
       .filter(p => parseFloat(p.position.szi) !== 0)
       .map(p => ({ ...p.position, agent: 'ANDRO' }));
-    const allHlPositions = [...pauloPositions, ...androPositions];
+    const allPositions = [...pauloPositions, ...androPositions];
+
+    // Unrealized PnL
+    const totalUnrealizedPnl = allPositions.reduce((s, p) => s + parseFloat(p.unrealizedPnl), 0);
 
     // Activity per day
     const pauloActivity = dates.map(d => pauloDaily[d]?.count || 0);
     const androActivity = dates.map(d => androDaily[d]?.count || 0);
 
-    // --- Polymarket calcs ---
-    let polyInvested = 0, polyCurrentValue = 0, polyPnl = 0;
-    const openPolyPositions = [];
-    const closedPolyPositions = [];
-
-    for (const p of polyPositions) {
-      const invested = parseFloat(p.initialValue || 0);
-      const current = parseFloat(p.currentValue || 0);
-      const cashPnl = parseFloat(p.cashPnl || 0);
-      polyInvested += invested;
-      polyCurrentValue += current;
-      polyPnl += cashPnl;
-
-      const pos = {
-        title: p.title || '?',
-        size: parseFloat(p.size || 0),
-        avgPrice: parseFloat(p.avgPrice || 0),
-        curPrice: parseFloat(p.curPrice || 0),
-        invested: invested,
-        current: current,
-        pnl: cashPnl,
-        pctPnl: parseFloat(p.percentPnl || 0),
-        outcome: p.outcome || (p.outcomeIndex === 0 ? 'Yes' : 'No'),
-        redeemable: p.redeemable,
-        slug: p.slug || '',
-      };
-      // If curPrice is 0 or 1, it's resolved
-      if (p.curPrice == 0 || p.curPrice == 1 || p.redeemable) {
-        closedPolyPositions.push(pos);
-      } else {
-        openPolyPositions.push(pos);
-      }
-    }
-
-    // Total value = current value of open positions + realized PnL from closed + remaining cash
-    // currentValue = live mark-to-market of open positions
-    // cashPnl includes realized gains/losses from resolved positions
-    const polyTotalValue = polyCurrentValue + (POLY_DEPOSIT - polyInvested + polyPnl);
-    const polyPnlPct = (polyPnl / POLY_DEPOSIT) * 100;
-    const polyTrades = polyActivity.length;
-
-    // Save today's snapshot
-    const todayStr = today.toISOString().slice(0, 10);
-    const polyHistory = savePolySnapshot(todayStr, polyTotalValue, polyInvested, polyPnl);
-
-    // Grand total
-    const grandEquity = hlEquity + polyTotalValue;
-    const grandDeposit = TOTAL_DEPOSIT + POLY_DEPOSIT;
-    const grandPnl = grandEquity - grandDeposit;
-
     // Update time
     document.getElementById('updateTime').textContent = new Date().toLocaleString('fr-FR', { timeZone: 'Europe/Paris', hour: '2-digit', minute: '2-digit', second: '2-digit', day: '2-digit', month: 'short', year: 'numeric' });
 
+    // === HERO PNL ===
+    document.getElementById('hero-container').innerHTML = `
+      <div class="hero ${totalRealizedPnl >= 0 ? 'positive' : 'negative'}">
+        <div class="hero-label">PnL Global Réalisé</div>
+        <div class="hero-value ${colorClass(totalRealizedPnl)}">${$(totalRealizedPnl)}</div>
+        <div class="hero-detail">${pct(totalRealizedPnl / TOTAL_DEPOSIT * 100)} depuis le 12 Feb · ${daysRunning} jours · ${pauloTradesPeriod + androTradesPeriod} trades</div>
+        <div class="hero-sub">
+          <div class="hero-sub-item">
+            <div class="hero-sub-label">Paulo</div>
+            <div class="hero-sub-value ${colorClass(pauloRealizedPnl)}">${$(pauloRealizedPnl)}</div>
+          </div>
+          <div class="hero-sub-item">
+            <div class="hero-sub-label">Andro</div>
+            <div class="hero-sub-value ${colorClass(androRealizedPnl)}">${$(androRealizedPnl)}</div>
+          </div>
+          <div class="hero-sub-item">
+            <div class="hero-sub-label">Non-réalisé</div>
+            <div class="hero-sub-value ${colorClass(totalUnrealizedPnl)}">${$(totalUnrealizedPnl)}</div>
+          </div>
+          <div class="hero-sub-item">
+            <div class="hero-sub-label">Capital</div>
+            <div class="hero-sub-value neutral">${$(totalEquity)}</div>
+          </div>
+        </div>
+      </div>
+    `;
+
     // === RENDER ===
     document.getElementById('content').innerHTML = `
-      <!-- GLOBAL SUMMARY -->
+      <!-- SUMMARY -->
       <div class="section">
         <div class="section-title">Vue d'ensemble</div>
         <div class="summary-grid">
           <div class="summary-card">
             <div class="label">Capital Total</div>
-            <div class="value neutral">${$(grandEquity)}</div>
-            <div class="detail">HL ${$(hlEquity)} + Poly ${$(polyTotalValue)}</div>
+            <div class="value neutral">${$(totalEquity)}</div>
+            <div class="detail">Paulo ${$(pauloEquity)} · Andro ${$(androEquity)}</div>
           </div>
           <div class="summary-card">
             <div class="label">Total Déposé</div>
-            <div class="value neutral">${$(grandDeposit)}</div>
-            <div class="detail">HL $${TOTAL_DEPOSIT} + Poly $${POLY_DEPOSIT}</div>
+            <div class="value neutral">${$(TOTAL_DEPOSIT)}</div>
+            <div class="detail">Paulo $${PAULO_ALLOC} · Andro $${ANDRO_ALLOC}</div>
           </div>
           <div class="summary-card">
-            <div class="label">PnL Global</div>
-            <div class="value ${colorClass(grandPnl)}">${$(grandPnl)}</div>
-            <div class="detail">${pct(grandPnl / grandDeposit * 100)} all-time</div>
+            <div class="label">PnL Global (equity)</div>
+            <div class="value ${colorClass(totalPnlGlobal)}">${$(totalPnlGlobal)}</div>
+            <div class="detail">${pct(totalPnlGlobal / TOTAL_DEPOSIT * 100)} all-time</div>
           </div>
           <div class="summary-card">
-            <div class="label">Hyperliquid</div>
-            <div class="value ${colorClass(hlPnlGlobal)}">${$(hlPnlGlobal)}</div>
-            <div class="detail">Paulo ${$(pauloPnlGlobal)} · Andro ${$(androPnlGlobal)}</div>
+            <div class="label">Positions Ouvertes</div>
+            <div class="value neutral">${allPositions.length}</div>
+            <div class="detail">Paulo ${pauloPositions.length} · Andro ${androPositions.length}</div>
           </div>
           <div class="summary-card">
-            <div class="label">Polymarket</div>
-            <div class="value ${colorClass(polyPnl)}">${$(polyPnl)}</div>
-            <div class="detail">${pct(polyPnlPct)} · ${polyTrades} trades · ${openPolyPositions.length} open</div>
+            <div class="label">Objectif</div>
+            <div class="value neutral">$1,000</div>
+            <div class="detail">${pct(totalEquity / 1000 * 100 - 100)} restant</div>
           </div>
-          <!-- Positions Ouvertes card removed -->
         </div>
       </div>
 
-      <!-- CAPITAL CHARTS -->
+      <!-- CAPITAL CHART -->
       <div class="section">
         <div class="section-title">📈 Évolution du Capital</div>
-        <div class="charts-two">
-          <div class="chart-container">
-            <h2>Hyperliquid — Paulo vs Andro vs Total</h2>
-            <canvas id="capitalChart"></canvas>
-          </div>
-          <div class="chart-container">
-            <h2>Polymarket — Capital</h2>
-            <canvas id="polyCapitalChart"></canvas>
-          </div>
+        <div class="chart-container">
+          <h2>Paulo vs Andro vs Total</h2>
+          <canvas id="capitalChart"></canvas>
         </div>
       </div>
 
-      <!-- AGENT COMPARISON -->
+      <!-- AGENTS -->
       <div class="section">
         <div class="section-title">🤖 Agents</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;">
+        <div class="agent-grid">
           <div class="agent-card paulo">
             <div class="agent-header">
               <div>
@@ -433,10 +387,10 @@ async function loadDashboard() {
             </div>
             <div class="agent-stats">
               <div class="agent-stat"><div class="as-label">Capital</div><div class="as-value">${$(pauloEquity)}</div></div>
-              <div class="agent-stat"><div class="as-label">PnL</div><div class="as-value ${colorClass(pauloPnlGlobal)}">${pct(pauloPnlGlobal / PAULO_ALLOC * 100)}</div></div>
+              <div class="agent-stat"><div class="as-label">PnL Réalisé</div><div class="as-value ${colorClass(pauloRealizedPnl)}">${$(pauloRealizedPnl)}</div></div>
               <div class="agent-stat"><div class="as-label">Marge</div><div class="as-value">${pauloMarginPct.toFixed(1)}%</div></div>
               <div class="agent-stat"><div class="as-label">Trades</div><div class="as-value">${pauloTradesPeriod}</div></div>
-              <div class="agent-stat"><div class="as-label">PnL Période</div><div class="as-value ${colorClass(pauloPnlPeriod)}">${$(pauloPnlPeriod)}</div></div>
+              <div class="agent-stat"><div class="as-label">PnL %</div><div class="as-value ${colorClass(pauloPnlGlobal)}">${pct(pauloPnlGlobal / PAULO_ALLOC * 100)}</div></div>
               <div class="agent-stat"><div class="as-label">Positions</div><div class="as-value">${pauloPositions.length}</div></div>
             </div>
           </div>
@@ -450,41 +404,24 @@ async function loadDashboard() {
             </div>
             <div class="agent-stats">
               <div class="agent-stat"><div class="as-label">Capital</div><div class="as-value">${$(androEquity)}</div></div>
-              <div class="agent-stat"><div class="as-label">PnL</div><div class="as-value ${colorClass(androPnlGlobal)}">${pct(androPnlGlobal / ANDRO_ALLOC * 100)}</div></div>
+              <div class="agent-stat"><div class="as-label">PnL Réalisé</div><div class="as-value ${colorClass(androRealizedPnl)}">${$(androRealizedPnl)}</div></div>
               <div class="agent-stat"><div class="as-label">Marge</div><div class="as-value">${androMarginPct.toFixed(1)}%</div></div>
               <div class="agent-stat"><div class="as-label">Trades</div><div class="as-value">${androTradesPeriod}</div></div>
-              <div class="agent-stat"><div class="as-label">PnL Période</div><div class="as-value ${colorClass(androPnlPeriod)}">${$(androPnlPeriod)}</div></div>
+              <div class="agent-stat"><div class="as-label">PnL %</div><div class="as-value ${colorClass(androPnlGlobal)}">${pct(androPnlGlobal / ANDRO_ALLOC * 100)}</div></div>
               <div class="agent-stat"><div class="as-label">Positions</div><div class="as-value">${androPositions.length}</div></div>
-            </div>
-          </div>
-          <div class="agent-card poly">
-            <div class="agent-header">
-              <div>
-                <div class="agent-name poly">🎯 PolyAgent</div>
-                <div class="agent-role">Prediction Markets</div>
-              </div>
-              <span class="badge badge-poly">LIVE</span>
-            </div>
-            <div class="agent-stats">
-              <div class="agent-stat"><div class="as-label">Capital</div><div class="as-value">${$(polyTotalValue)}</div></div>
-              <div class="agent-stat"><div class="as-label">PnL</div><div class="as-value ${colorClass(polyPnl)}">${pct(polyPnlPct)}</div></div>
-              <div class="agent-stat"><div class="as-label">Investi</div><div class="as-value">${$(polyInvested)}</div></div>
-              <div class="agent-stat"><div class="as-label">Trades</div><div class="as-value">${polyTrades}</div></div>
-              <div class="agent-stat"><div class="as-label">Valeur Pos.</div><div class="as-value">${$(polyCurrentValue)}</div></div>
-              <div class="agent-stat"><div class="as-label">Positions</div><div class="as-value">${openPolyPositions.length}</div></div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- HL POSITIONS -->
+      <!-- POSITIONS -->
       <div class="section">
-        <div class="section-title">📍 Positions Hyperliquid</div>
-        ${allHlPositions.length > 0 ? `
+        <div class="section-title">📍 Positions Ouvertes</div>
+        ${allPositions.length > 0 ? `
         <table class="positions-table">
           <thead><tr><th>Agent</th><th>Coin</th><th>Side</th><th>Size</th><th>Entry</th><th>uPnL</th><th>Lev</th></tr></thead>
           <tbody>
-            ${allHlPositions.map(p => {
+            ${allPositions.map(p => {
               const szi = parseFloat(p.szi);
               const isLong = szi > 0;
               const upnl = parseFloat(p.unrealizedPnl);
@@ -504,61 +441,16 @@ async function loadDashboard() {
         </table>` : `<div style="color:var(--text-muted);font-family:var(--mono);font-size:0.82rem;padding:14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);">Aucune position ouverte</div>`}
       </div>
 
-      <!-- POLY POSITIONS -->
-      <div class="section">
-        <div class="section-title">🎯 Positions Polymarket</div>
-        ${openPolyPositions.length > 0 ? `
-        <table class="positions-table">
-          <thead><tr><th>Marché</th><th>Shares</th><th>Avg</th><th>Prix</th><th>Investi</th><th>Valeur</th><th>PnL</th></tr></thead>
-          <tbody>
-            ${openPolyPositions.sort((a,b) => b.invested - a.invested).map(p => {
-              return `<tr>
-                <td class="poly-title-cell" title="${p.title}">${p.title}</td>
-                <td>${p.size.toFixed(2)}</td>
-                <td>${(p.avgPrice * 100).toFixed(1)}¢</td>
-                <td>${(p.curPrice * 100).toFixed(1)}¢</td>
-                <td>${$(p.invested)}</td>
-                <td>${$(p.current)}</td>
-                <td class="${colorClass(p.pnl)}">${$(p.pnl)}</td>
-              </tr>`;
-            }).join('')}
-          </tbody>
-        </table>` : `<div style="color:var(--text-muted);font-family:var(--mono);font-size:0.82rem;padding:14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);">Aucune position ouverte</div>`}
-        ${closedPolyPositions.length > 0 ? `
-        <div style="margin-top:10px;">
-          <details>
-            <summary style="cursor:pointer;color:var(--text-muted);font-family:var(--mono);font-size:0.75rem;">
-              ${closedPolyPositions.length} position(s) résolue(s)
-            </summary>
-            <table class="positions-table" style="margin-top:8px;opacity:0.7;">
-              <thead><tr><th>Marché</th><th>Shares</th><th>Avg</th><th>Résultat</th><th>PnL</th></tr></thead>
-              <tbody>
-                ${closedPolyPositions.map(p => {
-                  const won = p.curPrice == 1;
-                  return `<tr>
-                    <td class="poly-title-cell" title="${p.title}">${p.title}</td>
-                    <td>${p.size.toFixed(2)}</td>
-                    <td>${(p.avgPrice * 100).toFixed(1)}¢</td>
-                    <td class="${won ? 'green' : 'red'}">${won ? '✅ WIN' : '❌ LOSS'}</td>
-                    <td class="${colorClass(p.pnl)}">${$(p.pnl)}</td>
-                  </tr>`;
-                }).join('')}
-              </tbody>
-            </table>
-          </details>
-        </div>` : ''}
-      </div>
-
       <!-- CHARTS -->
       <div class="section">
         <div class="section-title">📊 Performance</div>
         <div class="charts-two">
-          <div class="chart-container"><h2>Activité Trading HL (fills/jour)</h2><canvas id="activityChart"></canvas></div>
+          <div class="chart-container"><h2>Activité Trading (fills/jour)</h2><canvas id="activityChart"></canvas></div>
           <div class="chart-container"><h2>Répartition du Capital</h2><canvas id="capitalPie"></canvas></div>
         </div>
         <div class="charts-two">
-          <div class="chart-container"><h2>Marge Utilisée HL</h2><canvas id="marginChart"></canvas></div>
-          <div class="chart-container"><h2>PnL par Agent</h2><canvas id="pnlCompare"></canvas></div>
+          <div class="chart-container"><h2>Marge Utilisée</h2><canvas id="marginChart"></canvas></div>
+          <div class="chart-container"><h2>PnL Réalisé par Agent</h2><canvas id="pnlCompare"></canvas></div>
         </div>
       </div>
     `;
@@ -566,16 +458,15 @@ async function loadDashboard() {
     // === CHARTS ===
     const ttOpts = { backgroundColor: '#1a1b25', borderColor: '#2a2b38', borderWidth: 1, titleFont: { family: "'Inter'" }, bodyFont: { family: "'JetBrains Mono'" } };
 
-    // HL Capital
     new Chart(document.getElementById('capitalChart'), {
       type: 'line',
       data: {
         labels: dateLabels,
         datasets: [
-          { label: 'Total HL', data: hlTotalCurve, borderColor: GREEN, backgroundColor: 'rgba(16,185,129,0.08)', fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: GREEN, borderWidth: 2.5 },
+          { label: 'Total', data: totalCurve, borderColor: GREEN, backgroundColor: 'rgba(16,185,129,0.08)', fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: GREEN, borderWidth: 2.5 },
           { label: 'Paulo', data: pauloCurve, borderColor: BLUE, backgroundColor: 'rgba(59,130,246,0.05)', fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: BLUE, borderWidth: 2 },
           { label: 'Andro', data: androCurve, borderColor: PURPLE, backgroundColor: 'rgba(168,85,247,0.05)', fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: PURPLE, borderWidth: 2 },
-          { label: 'Départ', data: dateLabels.map(() => TOTAL_DEPOSIT), borderColor: '#374151', borderDash: [6, 4], pointRadius: 0, borderWidth: 1, fill: false }
+          { label: 'Départ $317.76', data: dateLabels.map(() => TOTAL_DEPOSIT), borderColor: '#374151', borderDash: [6, 4], pointRadius: 0, borderWidth: 1, fill: false }
         ]
       },
       options: {
@@ -586,38 +477,12 @@ async function loadDashboard() {
       }
     });
 
-    // Poly Capital
-    if (polyHistory.length > 0) {
-      const polyDates = polyHistory.map(h => fmtDate(h.date));
-      const polyValues = polyHistory.map(h => h.value);
-      new Chart(document.getElementById('polyCapitalChart'), {
-        type: 'line',
-        data: {
-          labels: polyDates,
-          datasets: [
-            { label: 'Capital Poly', data: polyValues, borderColor: ORANGE, backgroundColor: 'rgba(245,158,11,0.08)', fill: true, tension: 0.3, pointRadius: 5, pointBackgroundColor: ORANGE, borderWidth: 2.5 },
-            { label: 'Départ', data: polyDates.map(() => POLY_DEPOSIT), borderColor: '#374151', borderDash: [6, 4], pointRadius: 0, borderWidth: 1, fill: false }
-          ]
-        },
-        options: {
-          responsive: true,
-          interaction: { mode: 'index', intersect: false },
-          plugins: { legend: { labels: { color: tickColor, usePointStyle: true, pointStyle: 'circle', padding: 16, font: { family: "'Inter'", size: 11 } } }, tooltip: { ...ttOpts, callbacks: { label: ctx => `${ctx.dataset.label}: $${ctx.parsed.y.toFixed(2)}` } } },
-          scales: { x: { ticks: { color: tickColor }, grid: { color: gridColor } }, y: { ticks: { color: tickColor, callback: v => '$' + v }, grid: { color: gridColor } } }
-        }
-      });
-    } else {
-      document.getElementById('polyCapitalChart').parentElement.innerHTML = '<h2>Polymarket — Capital</h2><div style="color:var(--text-muted);font-family:var(--mono);font-size:0.8rem;padding:20px;text-align:center;">Premier snapshot enregistré. La courbe se construit à chaque visite.</div>';
-    }
-
-    // Capital Pie (3 agents)
     new Chart(document.getElementById('capitalPie'), {
       type: 'doughnut',
-      data: { labels: ['Paulo', 'Andro', 'PolyAgent'], datasets: [{ data: [pauloEquity, androEquity, polyTotalValue], backgroundColor: [BLUE, PURPLE, ORANGE], borderColor: '#12131a', borderWidth: 3 }] },
-      options: { responsive: true, cutout: '60%', plugins: { legend: { labels: { color: tickColor, usePointStyle: true, padding: 16 }, position: 'bottom' }, tooltip: { ...ttOpts, callbacks: { label: ctx => `${ctx.label}: $${ctx.parsed.toFixed(2)} (${((ctx.parsed / grandEquity) * 100).toFixed(0)}%)` } } } }
+      data: { labels: ['Paulo', 'Andro'], datasets: [{ data: [pauloEquity, androEquity], backgroundColor: [BLUE, PURPLE], borderColor: '#12131a', borderWidth: 3 }] },
+      options: { responsive: true, cutout: '60%', plugins: { legend: { labels: { color: tickColor, usePointStyle: true, padding: 16 }, position: 'bottom' }, tooltip: { ...ttOpts, callbacks: { label: ctx => `${ctx.label}: $${ctx.parsed.toFixed(2)} (${((ctx.parsed / totalEquity) * 100).toFixed(0)}%)` } } } }
     });
 
-    // Activity
     new Chart(document.getElementById('activityChart'), {
       type: 'bar',
       data: { labels: dateLabels, datasets: [
@@ -627,7 +492,6 @@ async function loadDashboard() {
       options: { responsive: true, plugins: { legend: { labels: { color: tickColor, usePointStyle: true, pointStyle: 'circle' } } }, scales: { x: { ticks: { color: tickColor }, grid: { color: gridColor } }, y: { ticks: { color: tickColor }, grid: { color: gridColor } } } }
     });
 
-    // Margin
     new Chart(document.getElementById('marginChart'), {
       type: 'bar',
       data: { labels: ['Paulo', 'Andro'], datasets: [
@@ -637,10 +501,9 @@ async function loadDashboard() {
       options: { responsive: true, plugins: { legend: { labels: { color: tickColor } } }, scales: { x: { stacked: false, ticks: { color: tickColor }, grid: { color: gridColor } }, y: { max: 100, ticks: { color: tickColor, callback: v => v + '%' }, grid: { color: gridColor } } } }
     });
 
-    // PnL Compare (3 agents)
     new Chart(document.getElementById('pnlCompare'), {
       type: 'bar',
-      data: { labels: ['Paulo', 'Andro', 'PolyAgent'], datasets: [{ label: 'PnL ($)', data: [pauloPnlGlobal, androPnlGlobal, polyPnl], backgroundColor: [pauloPnlGlobal >= 0 ? BLUE : RED, androPnlGlobal >= 0 ? PURPLE : RED, polyPnl >= 0 ? ORANGE : RED], borderRadius: 8 }] },
+      data: { labels: ['Paulo', 'Andro'], datasets: [{ label: 'PnL Réalisé ($)', data: [pauloRealizedPnl, androRealizedPnl], backgroundColor: [pauloRealizedPnl >= 0 ? BLUE : RED, androRealizedPnl >= 0 ? PURPLE : RED], borderRadius: 8 }] },
       options: { responsive: true, plugins: { legend: { display: false } }, scales: { x: { ticks: { color: tickColor }, grid: { color: gridColor } }, y: { ticks: { color: tickColor, callback: v => '$' + v }, grid: { color: gridColor } } } }
     });
 
