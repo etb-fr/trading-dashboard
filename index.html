@@ -12,6 +12,8 @@
     --surface: #12131a;
     --surface2: #1a1b25;
     --border: #2a2b38;
+    --border-card: rgba(168, 85, 247, 0.15);
+    --violet-electric: #b44aff;
     --text: #e8eaed;
     --text-muted: #6b7280;
     --text-dim: #4b5563;
@@ -44,7 +46,7 @@
     margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--border);
   }
   .header-left h1 { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; }
-  .header-left h1 span { color: var(--blue); }
+  .header-left h1 span { color: var(--violet-electric); }
   .header-sub { color: var(--text-muted); font-size: 0.8rem; margin-top: 4px; font-family: var(--mono); }
   .header-right { display: flex; gap: 8px; align-items: center; }
   .badge { font-size: 0.7rem; font-weight: 600; padding: 4px 10px; border-radius: 20px; font-family: var(--mono); }
@@ -57,7 +59,7 @@
   /* HERO PNL */
   .hero {
     background: var(--surface);
-    border: 1px solid var(--border);
+    border: 1px solid var(--border-card);
     border-radius: 16px;
     padding: 28px 32px;
     margin-bottom: 28px;
@@ -92,17 +94,17 @@
   .section-title { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 14px; }
   .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
   .summary-card {
-    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    background: var(--surface); border: 1px solid var(--border-card); border-radius: var(--radius);
     padding: 18px; transition: border-color 200ms ease;
   }
-  .summary-card:hover { border-color: var(--text-dim); }
+  .summary-card:hover { border-color: rgba(168, 85, 247, 0.35); }
   .summary-card .label { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 6px; }
   .summary-card .value { font-size: 1.6rem; font-weight: 800; font-family: var(--mono); letter-spacing: -0.02em; }
   .summary-card .detail { font-size: 0.72rem; color: var(--text-muted); margin-top: 4px; font-family: var(--mono); }
 
   /* GRID STATUS */
   .grid-status-container {
-    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    background: var(--surface); border: 1px solid var(--border-card); border-radius: var(--radius);
     padding: 24px;
   }
   .grid-config-line {
@@ -119,7 +121,7 @@
   .grid-health-status { font-size: 1rem; font-weight: 700; font-family: var(--mono); margin-top: 2px; }
   .grid-coins { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
   .grid-coin {
-    background: var(--surface2); border: 1px solid var(--border); border-radius: 10px;
+    background: var(--surface2); border: 1px solid var(--border-card); border-radius: 10px;
     padding: 16px;
   }
   .grid-coin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
@@ -138,7 +140,7 @@
     margin-bottom: 18px;
   }
   .grid-perf-stat {
-    background: var(--surface2); border: 1px solid var(--border); border-radius: 8px;
+    background: var(--surface2); border: 1px solid var(--border-card); border-radius: 8px;
     padding: 14px;
   }
   .grid-perf-stat .label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); }
@@ -147,7 +149,7 @@
   .agent-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
   @media(max-width: 768px) { .agent-grid { grid-template-columns: 1fr; } }
   .agent-card {
-    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    background: var(--surface); border: 1px solid var(--border-card); border-radius: var(--radius);
     padding: 20px; position: relative; overflow: hidden;
   }
   .agent-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
@@ -163,7 +165,7 @@
   .agent-stat .as-value { font-size: 1rem; font-weight: 700; font-family: var(--mono); margin-top: 2px; }
   .positions-table {
     width: 100%; border-collapse: collapse; background: var(--surface);
-    border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden;
+    border: 1px solid var(--border-card); border-radius: var(--radius); overflow: hidden;
   }
   .positions-table th {
     background: var(--surface2); color: var(--text-muted); font-size: 0.68rem; font-weight: 600;
@@ -179,7 +181,7 @@
   .tag-andro { background: var(--purple-bg); color: var(--purple); }
   .tag-grid { background: var(--orange-bg); color: var(--orange); margin-left: 4px; }
   .chart-container {
-    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    background: var(--surface); border: 1px solid var(--border-card); border-radius: var(--radius);
     padding: 20px; margin-bottom: 14px;
   }
   .chart-container h2 { font-size: 0.85rem; font-weight: 700; margin-bottom: 14px; }
@@ -513,7 +515,7 @@ async function loadDashboard() {
     document.getElementById('content').innerHTML = `
       <!-- GRID STATUS -->
       <div class="section">
-        <div class="section-title">⚡ Grid Status</div>
+        <div class="section-title" style="color: var(--violet-electric);">⚡ Grid Status</div>
         <div class="grid-status-container">
           <div class="grid-config-line">
             Config: 0.8% spread · 5 niveaux · $30/niveau · rebalance 48h
@@ -549,7 +551,7 @@ async function loadDashboard() {
 
       <!-- GRID PERFORMANCE -->
       <div class="section">
-        <div class="section-title">📊 Grid Performance</div>
+        <div class="section-title" style="color: var(--violet-electric);">📊 Grid Performance</div>
         <div class="grid-perf-stats">
           <div class="grid-perf-stat">
             <div class="label">Fills Post-Grid</div>
