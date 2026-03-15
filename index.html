@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>⚛️ Olivaris — Trading Dashboard v9</title>
+<title>⚛️ Olivaris — Trading Dashboard v10</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
 <style>
@@ -51,12 +51,10 @@
   .header-right { display: flex; gap: 8px; align-items: center; }
   .badge { font-size: 0.7rem; font-weight: 600; padding: 4px 10px; border-radius: 20px; font-family: var(--mono); }
   .badge-paulo { background: var(--blue-bg); color: var(--blue); border: 1px solid rgba(59,130,246,0.3); }
-  .badge-andro { background: var(--purple-bg); color: var(--purple); border: 1px solid rgba(168,85,247,0.3); }
   .live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); display: inline-block; animation: pulse 2s infinite; margin-right: 4px; }
   @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
   .live-label { font-size: 0.7rem; color: var(--green); font-family: var(--mono); }
 
-  /* HERO PNL */
   .hero {
     background: var(--surface);
     border: 1px solid var(--border-card);
@@ -83,9 +81,9 @@
   .hero-sub-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-dim); }
   .hero-sub-value { font-size: 1.1rem; font-weight: 700; font-family: var(--mono); margin-top: 2px; }
   .hero-toggle { margin-top: 12px; }
-  .hero-toggle-btn { 
-    background: var(--surface2); border: 1px solid var(--border); color: var(--text-muted); 
-    padding: 6px 14px; border-radius: 6px; font-family: var(--mono); font-size: 0.7rem; 
+  .hero-toggle-btn {
+    background: var(--surface2); border: 1px solid var(--border); color: var(--text-muted);
+    padding: 6px 14px; border-radius: 6px; font-family: var(--mono); font-size: 0.7rem;
     cursor: pointer; transition: all 150ms ease;
   }
   .hero-toggle-btn:hover { border-color: var(--blue); color: var(--blue); }
@@ -102,7 +100,6 @@
   .summary-card .value { font-size: 1.6rem; font-weight: 800; font-family: var(--mono); letter-spacing: -0.02em; }
   .summary-card .detail { font-size: 0.72rem; color: var(--text-muted); margin-top: 4px; font-family: var(--mono); }
 
-  /* GRID STATUS */
   .grid-status-container {
     background: var(--surface); border: 1px solid var(--border-card); border-radius: var(--radius);
     padding: 24px;
@@ -127,14 +124,13 @@
   .grid-coin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
   .grid-coin-name { font-size: 1rem; font-weight: 700; }
   .grid-coin-count { font-size: 0.72rem; font-family: var(--mono); color: var(--text-muted); }
-  .grid-coin-progress { 
-    width: 100%; height: 6px; background: var(--border); border-radius: 3px; 
+  .grid-coin-progress {
+    width: 100%; height: 6px; background: var(--border); border-radius: 3px;
     overflow: hidden; margin-bottom: 8px;
   }
   .grid-coin-progress-bar { height: 100%; transition: width 200ms ease; }
   .grid-coin-inventory { font-size: 0.75rem; color: var(--text-muted); font-family: var(--mono); }
 
-  /* GRID PERFORMANCE */
   .grid-perf-stats {
     display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px;
     margin-bottom: 18px;
@@ -146,23 +142,18 @@
   .grid-perf-stat .label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); }
   .grid-perf-stat .value { font-size: 1.3rem; font-weight: 700; font-family: var(--mono); margin-top: 4px; }
 
-  .agent-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-  @media(max-width: 768px) { .agent-grid { grid-template-columns: 1fr; } }
   .agent-card {
     background: var(--surface); border: 1px solid var(--border-card); border-radius: var(--radius);
     padding: 20px; position: relative; overflow: hidden;
   }
-  .agent-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
-  .agent-card.paulo::before { background: linear-gradient(90deg, var(--blue), #60a5fa); }
-  .agent-card.andro::before { background: linear-gradient(90deg, var(--purple), #c084fc); }
+  .agent-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--blue), #60a5fa); }
   .agent-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
-  .agent-name { font-size: 1.1rem; font-weight: 800; }
-  .agent-name.paulo { color: var(--blue); }
-  .agent-name.andro { color: var(--purple); }
+  .agent-name { font-size: 1.1rem; font-weight: 800; color: var(--blue); }
   .agent-role { font-size: 0.68rem; color: var(--text-muted); font-family: var(--mono); }
   .agent-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
   .agent-stat .as-label { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
   .agent-stat .as-value { font-size: 1rem; font-weight: 700; font-family: var(--mono); margin-top: 2px; }
+
   .positions-table {
     width: 100%; border-collapse: collapse; background: var(--surface);
     border: 1px solid var(--border-card); border-radius: var(--radius); overflow: hidden;
@@ -176,10 +167,7 @@
     font-family: var(--mono); font-variant-numeric: tabular-nums;
   }
   .positions-table tr:hover { background: var(--surface2); }
-  .agent-tag { font-size: 0.6rem; font-weight: 700; padding: 2px 6px; border-radius: 4px; }
-  .tag-paulo { background: var(--blue-bg); color: var(--blue); }
-  .tag-andro { background: var(--purple-bg); color: var(--purple); }
-  .tag-grid { background: var(--orange-bg); color: var(--orange); margin-left: 4px; }
+  .tag-grid { font-size: 0.6rem; font-weight: 700; padding: 2px 6px; border-radius: 4px; background: var(--orange-bg); color: var(--orange); }
   .chart-container {
     background: var(--surface); border: 1px solid var(--border-card); border-radius: var(--radius);
     padding: 20px; margin-bottom: 14px;
@@ -191,7 +179,6 @@
   .green { color: var(--green); }
   .red { color: var(--red); }
   .blue { color: var(--blue); }
-  .purple { color: var(--purple); }
   .neutral { color: var(--text); }
   .footer {
     color: var(--text-dim); font-size: 0.7rem; text-align: center; margin-top: 28px;
@@ -211,8 +198,7 @@
   </div>
   <div class="header-right">
     <span class="live-dot"></span><span class="live-label">LIVE</span>
-    <span class="badge badge-paulo">🧠 Paulo</span>
-    <span class="badge badge-andro">⚡ Andro</span>
+    <span class="badge badge-paulo">🧠 Paulo · Grid Engine</span>
   </div>
 </div>
 
@@ -223,16 +209,13 @@
 </div>
 
 <div class="footer">
-  ⚛️ Olivaris · Claudio (COO) · Paulo (Quant · Grid Engine) · Andro (Autonome · Test) · Road to $1,000 · Dashboard v9 · Grid Era
+  ⚛️ Olivaris · Claudio (COO) · Paulo (Grid Engine) · Road to $1,000 · Dashboard v10
 </div>
 
 <script>
-const PAULO_WALLET = '0x73699b2aa74814b14Cb581BbF53A07A84140F942';
-const ANDRO_WALLET = '0xeBee34176A218FA517Db163DD1A7aaA944c66d86';
+const WALLET = '0x73699b2aa74814b14Cb581BbF53A07A84140F942';
 const HL_API = 'https://api.hyperliquid.xyz/info';
 const TOTAL_DEPOSIT = 317.76;
-const PAULO_ALLOC = 219.76;
-const ANDRO_ALLOC = 98.00;
 const START_DATE = new Date('2026-02-12T00:01:00+01:00');
 const GRID_START_DATE = new Date('2026-03-14T21:00:00Z');
 
@@ -245,12 +228,11 @@ const GRID_CONFIG = [
 const gridColor = '#1e1f2e';
 const tickColor = '#6b7280';
 const BLUE = '#3b82f6';
-const PURPLE = '#a855f7';
 const GREEN = '#10b981';
 const RED = '#ef4444';
 const ORANGE = '#f59e0b';
 
-let heroMode = 'grid'; // 'grid' or 'alltime'
+let heroMode = 'grid';
 
 async function hlPost(type, params = {}) {
   const r = await fetch(HL_API, {
@@ -315,196 +297,144 @@ function fmtDate(d) {
 
 async function loadDashboard() {
   try {
-    const [pauloState, androState, pauloFills, androFills, pauloGridFills, androGridFills, pauloOrders, androOrders] = await Promise.all([
-      hlPost('clearinghouseState', { user: PAULO_WALLET }),
-      hlPost('clearinghouseState', { user: ANDRO_WALLET }),
-      hlPost('userFills', { user: PAULO_WALLET }),
-      hlPost('userFills', { user: ANDRO_WALLET }),
-      hlPost('userFillsByTime', { user: PAULO_WALLET, startTime: GRID_START_DATE.getTime() }),
-      hlPost('userFillsByTime', { user: ANDRO_WALLET, startTime: GRID_START_DATE.getTime() }),
-      hlPost('openOrders', { user: PAULO_WALLET }),
-      hlPost('openOrders', { user: ANDRO_WALLET }),
+    const [state, allFills, gridFills, openOrders] = await Promise.all([
+      hlPost('clearinghouseState', { user: WALLET }),
+      hlPost('userFills', { user: WALLET }),
+      hlPost('userFillsByTime', { user: WALLET, startTime: GRID_START_DATE.getTime() }),
+      hlPost('openOrders', { user: WALLET }),
     ]);
 
-    const pauloEquity = parseFloat(pauloState.marginSummary.accountValue);
-    const androEquity = parseFloat(androState.marginSummary.accountValue);
-    const totalEquity = pauloEquity + androEquity;
-
-    const pauloMarginUsed = parseFloat(pauloState.marginSummary.totalMarginUsed);
-    const androMarginUsed = parseFloat(androState.marginSummary.totalMarginUsed);
-    const pauloMarginPct = pauloEquity > 0 ? (pauloMarginUsed / pauloEquity * 100) : 0;
-    const androMarginPct = androEquity > 0 ? (androMarginUsed / androEquity * 100) : 0;
+    const equity = parseFloat(state.marginSummary.accountValue);
+    const marginUsed = parseFloat(state.marginSummary.totalMarginUsed);
+    const marginPct = equity > 0 ? (marginUsed / equity * 100) : 0;
 
     // ALL-TIME PNL
-    const startTs = START_DATE.getTime();
-    const pauloDaily = buildDailyPnl(pauloFills, startTs);
-    const androDaily = buildDailyPnl(androFills, startTs);
-    const pauloRealizedPnlAlltime = Object.values(pauloDaily).reduce((s, d) => s + d.pnl - d.fees, 0);
-    const androRealizedPnlAlltime = Object.values(androDaily).reduce((s, d) => s + d.pnl - d.fees, 0);
-    const totalRealizedPnlAlltime = pauloRealizedPnlAlltime + androRealizedPnlAlltime;
-    const totalTradesAlltime = Object.values(pauloDaily).reduce((s, d) => s + d.count, 0) + Object.values(androDaily).reduce((s, d) => s + d.count, 0);
+    const dailyAll = buildDailyPnl(allFills, START_DATE.getTime());
+    const realizedPnlAll = Object.values(dailyAll).reduce((s, d) => s + d.pnl - d.fees, 0);
+    const tradesAll = Object.values(dailyAll).reduce((s, d) => s + d.count, 0);
 
     // GRID ERA PNL
     const gridTs = GRID_START_DATE.getTime();
-    const pauloDailyGrid = buildDailyPnl(pauloGridFills, gridTs);
-    const androDailyGrid = buildDailyPnl(androGridFills, gridTs);
-    const pauloRealizedPnlGrid = Object.values(pauloDailyGrid).reduce((s, d) => s + d.pnl - d.fees, 0);
-    const androRealizedPnlGrid = Object.values(androDailyGrid).reduce((s, d) => s + d.pnl - d.fees, 0);
-    const totalRealizedPnlGrid = pauloRealizedPnlGrid + androRealizedPnlGrid;
-    const totalTradesGrid = Object.values(pauloDailyGrid).reduce((s, d) => s + d.count, 0) + Object.values(androDailyGrid).reduce((s, d) => s + d.count, 0);
-    const daysGrid = Math.floor((Date.now() - GRID_START_DATE.getTime()) / 86400000);
-
-    // GRID COIN PNL
-    const pauloCoinGrid = buildCoinPnl(pauloGridFills, gridTs);
-    const androCoinGrid = buildCoinPnl(androGridFills, gridTs);
-    const totalFeesGrid = Object.values(pauloDailyGrid).reduce((s, d) => s + d.fees, 0) + Object.values(androDailyGrid).reduce((s, d) => s + d.fees, 0);
-
-    // Capital curves
-    const today = new Date();
-    const dates = getDaysBetween(START_DATE, today);
-    const pauloCurve = [];
-    const androCurve = [];
-    let pauloRemaining = 0;
-    let androRemaining = 0;
-    for (let i = dates.length - 1; i >= 0; i--) {
-      const d = dates[i];
-      pauloCurve.unshift(+(pauloEquity - pauloRemaining).toFixed(2));
-      androCurve.unshift(+(androEquity - androRemaining).toFixed(2));
-      pauloRemaining += (pauloDaily[d] ? pauloDaily[d].pnl - pauloDaily[d].fees : 0);
-      androRemaining += (androDaily[d] ? androDaily[d].pnl - androDaily[d].fees : 0);
-    }
-    const totalCurve = pauloCurve.map((p, i) => +(p + androCurve[i]).toFixed(2));
-    const dateLabels = dates.map(fmtDate);
+    const dailyGrid = buildDailyPnl(gridFills, gridTs);
+    const realizedPnlGrid = Object.values(dailyGrid).reduce((s, d) => s + d.pnl - d.fees, 0);
+    const tradesGrid = Object.values(dailyGrid).reduce((s, d) => s + d.count, 0);
+    const daysGrid = Math.max(1, Math.floor((Date.now() - gridTs) / 86400000));
+    const feesGrid = Object.values(dailyGrid).reduce((s, d) => s + d.fees, 0);
+    const coinGrid = buildCoinPnl(gridFills, gridTs);
 
     // Positions
-    const pauloPositions = (pauloState.assetPositions || [])
+    const positions = (state.assetPositions || [])
       .filter(p => parseFloat(p.position.szi) !== 0)
-      .map(p => ({ ...p.position, agent: 'PAULO' }));
-    const androPositions = (androState.assetPositions || [])
-      .filter(p => parseFloat(p.position.szi) !== 0)
-      .map(p => ({ ...p.position, agent: 'ANDRO' }));
-    const allPositions = [...pauloPositions, ...androPositions];
-
-    // Unrealized PnL
-    const totalUnrealizedPnl = allPositions.reduce((s, p) => s + parseFloat(p.unrealizedPnl), 0);
+      .map(p => p.position);
+    const totalUnrealizedPnl = positions.reduce((s, p) => s + parseFloat(p.unrealizedPnl), 0);
 
     // Grid Status
-    const pauloOpenOrders = pauloOrders || [];
     const gridCoins = ['BTC', 'ETH', 'SOL'];
     const gridOrdersStatus = {};
     for (const coin of gridCoins) {
-      const ordersForCoin = pauloOpenOrders.filter(o => o.coin === coin);
-      const expected = 10; // 5 buy + 5 sell
-      const actual = ordersForCoin.length;
-      const posForCoin = pauloPositions.find(p => p.coin === coin);
-      const inventory = posForCoin ? parseFloat(posForCoin.szi) : 0;
-      gridOrdersStatus[coin] = { actual, expected, inventory };
+      const coinOrders = openOrders.filter(o => o.coin === coin);
+      const pos = positions.find(p => p.coin === coin);
+      gridOrdersStatus[coin] = {
+        actual: coinOrders.length,
+        expected: 10,
+        inventory: pos ? parseFloat(pos.szi) : 0
+      };
     }
     const totalGridOrders = Object.values(gridOrdersStatus).reduce((s, g) => s + g.actual, 0);
-    const totalExpected = gridCoins.length * 10;
-    const gridHealthPct = totalExpected > 0 ? (totalGridOrders / totalExpected * 100) : 0;
+    const totalExpected = 30;
+    const gridHealthPct = (totalGridOrders / totalExpected * 100);
     const gridHealthIcon = gridHealthPct >= 80 ? '🟢' : (gridHealthPct >= 50 ? '🟡' : '🔴');
     const gridHealthLabel = gridHealthPct >= 80 ? 'Optimal' : (gridHealthPct >= 50 ? 'Partiel' : 'Dégradé');
 
-    // Activity per day
-    const pauloActivity = dates.map(d => pauloDaily[d]?.count || 0);
-    const androActivity = dates.map(d => androDaily[d]?.count || 0);
+    // Capital curve (all-time)
+    const today = new Date();
+    const dates = getDaysBetween(START_DATE, today);
+    const capitalCurve = [];
+    let remaining = 0;
+    for (let i = dates.length - 1; i >= 0; i--) {
+      capitalCurve.unshift(+(equity - remaining).toFixed(2));
+      remaining += (dailyAll[dates[i]] ? dailyAll[dates[i]].pnl - dailyAll[dates[i]].fees : 0);
+    }
+    const dateLabels = dates.map(fmtDate);
 
-    // Grid fills per day
+    // Activity per day
+    const activity = dates.map(d => dailyAll[d]?.count || 0);
+
+    // Grid fills per day per coin
     const gridDates = getDaysBetween(GRID_START_DATE, today);
     const gridDateLabels = gridDates.map(fmtDate);
-    const btcFillsPerDay = gridDates.map(d => {
-      const pFills = pauloGridFills.filter(f => f.coin === 'BTC' && new Date(f.time).toISOString().slice(0,10) === d).length;
-      const aFills = androGridFills.filter(f => f.coin === 'BTC' && new Date(f.time).toISOString().slice(0,10) === d).length;
-      return pFills + aFills;
-    });
-    const ethFillsPerDay = gridDates.map(d => {
-      const pFills = pauloGridFills.filter(f => f.coin === 'ETH' && new Date(f.time).toISOString().slice(0,10) === d).length;
-      const aFills = androGridFills.filter(f => f.coin === 'ETH' && new Date(f.time).toISOString().slice(0,10) === d).length;
-      return pFills + aFills;
-    });
-    const solFillsPerDay = gridDates.map(d => {
-      const pFills = pauloGridFills.filter(f => f.coin === 'SOL' && new Date(f.time).toISOString().slice(0,10) === d).length;
-      const aFills = androGridFills.filter(f => f.coin === 'SOL' && new Date(f.time).toISOString().slice(0,10) === d).length;
-      return pFills + aFills;
-    });
+    const btcFillsPerDay = gridDates.map(d => gridFills.filter(f => f.coin === 'BTC' && new Date(f.time).toISOString().slice(0,10) === d).length);
+    const ethFillsPerDay = gridDates.map(d => gridFills.filter(f => f.coin === 'ETH' && new Date(f.time).toISOString().slice(0,10) === d).length);
+    const solFillsPerDay = gridDates.map(d => gridFills.filter(f => f.coin === 'SOL' && new Date(f.time).toISOString().slice(0,10) === d).length);
 
     // Grid cumulative PnL
     const gridCumulativePnl = gridDates.map((d, idx) => {
       let sum = 0;
       for (let i = 0; i <= idx; i++) {
-        const dayData = [...Object.entries(pauloDailyGrid), ...Object.entries(androDailyGrid)].filter(([day]) => day === gridDates[i]);
-        for (const [, data] of dayData) {
-          sum += data.pnl - data.fees;
-        }
+        const dd = dailyGrid[gridDates[i]];
+        if (dd) sum += dd.pnl - dd.fees;
       }
-      return sum.toFixed(2);
+      return +sum.toFixed(2);
     });
 
     // Update time
     document.getElementById('updateTime').textContent = new Date().toLocaleString('fr-FR', { timeZone: 'Europe/Paris', hour: '2-digit', minute: '2-digit', second: '2-digit', day: '2-digit', month: 'short', year: 'numeric' });
 
-    // === HERO PNL ===
+    // === HERO ===
     function renderHero() {
       if (heroMode === 'grid') {
         document.getElementById('hero-container').innerHTML = `
-          <div class="hero ${totalRealizedPnlGrid >= 0 ? 'positive' : 'negative'}">
+          <div class="hero ${realizedPnlGrid >= 0 ? 'positive' : 'negative'}">
             <div class="hero-label">PnL Réalisé · Grid Era</div>
-            <div class="hero-value ${colorClass(totalRealizedPnlGrid)}">${$(totalRealizedPnlGrid)}</div>
-            <div class="hero-detail">Grid Era · ${daysGrid} jours · ${totalTradesGrid} fills</div>
+            <div class="hero-value ${colorClass(realizedPnlGrid)}">${$(realizedPnlGrid)}</div>
+            <div class="hero-detail">Grid Era · ${daysGrid} jours · ${tradesGrid} fills</div>
             <div class="hero-sub">
-              <div class="hero-sub-item">
-                <div class="hero-sub-label">Paulo</div>
-                <div class="hero-sub-value ${colorClass(pauloRealizedPnlGrid)}">${$(pauloRealizedPnlGrid)}</div>
-              </div>
-              <div class="hero-sub-item">
-                <div class="hero-sub-label">Andro</div>
-                <div class="hero-sub-value ${colorClass(androRealizedPnlGrid)}">${$(androRealizedPnlGrid)}</div>
-              </div>
               <div class="hero-sub-item">
                 <div class="hero-sub-label">Non-réalisé</div>
                 <div class="hero-sub-value ${colorClass(totalUnrealizedPnl)}">${$(totalUnrealizedPnl)}</div>
               </div>
               <div class="hero-sub-item">
                 <div class="hero-sub-label">Capital</div>
-                <div class="hero-sub-value neutral">${$(totalEquity)}</div>
+                <div class="hero-sub-value neutral">${$(equity)}</div>
+              </div>
+              <div class="hero-sub-item">
+                <div class="hero-sub-label">Marge</div>
+                <div class="hero-sub-value neutral">${marginPct.toFixed(1)}%</div>
+              </div>
+              <div class="hero-sub-item">
+                <div class="hero-sub-label">Ordres</div>
+                <div class="hero-sub-value neutral">${totalGridOrders}/30</div>
               </div>
             </div>
             <div class="hero-toggle">
               <button class="hero-toggle-btn" onclick="heroMode='alltime'; renderHero();">Voir All-time</button>
             </div>
-          </div>
-        `;
+          </div>`;
       } else {
         const daysAlltime = Math.floor((Date.now() - START_DATE.getTime()) / 86400000);
         document.getElementById('hero-container').innerHTML = `
-          <div class="hero ${totalRealizedPnlAlltime >= 0 ? 'positive' : 'negative'}">
+          <div class="hero ${realizedPnlAll >= 0 ? 'positive' : 'negative'}">
             <div class="hero-label">PnL Réalisé · All-time</div>
-            <div class="hero-value ${colorClass(totalRealizedPnlAlltime)}">${$(totalRealizedPnlAlltime)}</div>
-            <div class="hero-detail">Depuis le 12 Feb · ${daysAlltime} jours · ${totalTradesAlltime} fills</div>
+            <div class="hero-value ${colorClass(realizedPnlAll)}">${$(realizedPnlAll)}</div>
+            <div class="hero-detail">Depuis le 12 Feb · ${daysAlltime} jours · ${tradesAll} fills</div>
             <div class="hero-sub">
-              <div class="hero-sub-item">
-                <div class="hero-sub-label">Paulo</div>
-                <div class="hero-sub-value ${colorClass(pauloRealizedPnlAlltime)}">${$(pauloRealizedPnlAlltime)}</div>
-              </div>
-              <div class="hero-sub-item">
-                <div class="hero-sub-label">Andro</div>
-                <div class="hero-sub-value ${colorClass(androRealizedPnlAlltime)}">${$(androRealizedPnlAlltime)}</div>
-              </div>
               <div class="hero-sub-item">
                 <div class="hero-sub-label">Non-réalisé</div>
                 <div class="hero-sub-value ${colorClass(totalUnrealizedPnl)}">${$(totalUnrealizedPnl)}</div>
               </div>
               <div class="hero-sub-item">
                 <div class="hero-sub-label">Capital</div>
-                <div class="hero-sub-value neutral">${$(totalEquity)}</div>
+                <div class="hero-sub-value neutral">${$(equity)}</div>
+              </div>
+              <div class="hero-sub-item">
+                <div class="hero-sub-label">vs Dépôt</div>
+                <div class="hero-sub-value ${colorClass(equity - TOTAL_DEPOSIT)}">${pct((equity - TOTAL_DEPOSIT) / TOTAL_DEPOSIT * 100)}</div>
               </div>
             </div>
             <div class="hero-toggle">
               <button class="hero-toggle-btn" onclick="heroMode='grid'; renderHero();">Voir Grid Era</button>
             </div>
-          </div>
-        `;
+          </div>`;
       }
     }
     window.heroMode = heroMode;
@@ -512,14 +442,44 @@ async function loadDashboard() {
     renderHero();
 
     // === RENDER ===
+    const pnlVsDeposit = equity - TOTAL_DEPOSIT;
     document.getElementById('content').innerHTML = `
+      <!-- SUMMARY -->
+      <div class="section">
+        <div class="section-title">Vue d'ensemble</div>
+        <div class="summary-grid">
+          <div class="summary-card">
+            <div class="label">Capital</div>
+            <div class="value neutral">${$(equity)}</div>
+            <div class="detail">Marge: ${marginPct.toFixed(1)}%</div>
+          </div>
+          <div class="summary-card">
+            <div class="label">Total Déposé</div>
+            <div class="value neutral">${$(TOTAL_DEPOSIT)}</div>
+          </div>
+          <div class="summary-card">
+            <div class="label">PnL vs Dépôt</div>
+            <div class="value ${colorClass(pnlVsDeposit)}">${$(pnlVsDeposit)}</div>
+            <div class="detail">${pct(pnlVsDeposit / TOTAL_DEPOSIT * 100)}</div>
+          </div>
+          <div class="summary-card">
+            <div class="label">Positions</div>
+            <div class="value neutral">${positions.length}</div>
+            <div class="detail">Grid inventory</div>
+          </div>
+          <div class="summary-card">
+            <div class="label">Objectif</div>
+            <div class="value neutral">$1,000</div>
+            <div class="detail">${pct(equity / 1000 * 100 - 100)} restant</div>
+          </div>
+        </div>
+      </div>
+
       <!-- GRID STATUS -->
       <div class="section">
         <div class="section-title" style="color: var(--violet-electric);">⚡ Grid Status</div>
         <div class="grid-status-container">
-          <div class="grid-config-line">
-            Config: 0.8% spread · 5 niveaux · $30/niveau · rebalance 48h
-          </div>
+          <div class="grid-config-line">Config: 0.8% spread · 5 niveaux · $30/niveau · rebalance 48h</div>
           <div class="grid-health">
             <div class="grid-health-icon">${gridHealthIcon}</div>
             <div class="grid-health-text">
@@ -542,8 +502,7 @@ async function loadDashboard() {
                     <div class="grid-coin-progress-bar" style="width: ${progPct}%; background: ${progColor};"></div>
                   </div>
                   <div class="grid-coin-inventory">Inventory: ${gs.inventory > 0 ? '+' : ''}${gs.inventory.toFixed(4)}</div>
-                </div>
-              `;
+                </div>`;
             }).join('')}
           </div>
         </div>
@@ -553,38 +512,12 @@ async function loadDashboard() {
       <div class="section">
         <div class="section-title" style="color: var(--violet-electric);">📊 Grid Performance</div>
         <div class="grid-perf-stats">
-          <div class="grid-perf-stat">
-            <div class="label">Fills Post-Grid</div>
-            <div class="value neutral">${totalTradesGrid}</div>
-          </div>
-          <div class="grid-perf-stat">
-            <div class="label">BTC Fills</div>
-            <div class="value blue">${(pauloCoinGrid.BTC?.count || 0) + (androCoinGrid.BTC?.count || 0)}</div>
-          </div>
-          <div class="grid-perf-stat">
-            <div class="label">ETH Fills</div>
-            <div class="value blue">${(pauloCoinGrid.ETH?.count || 0) + (androCoinGrid.ETH?.count || 0)}</div>
-          </div>
-          <div class="grid-perf-stat">
-            <div class="label">SOL Fills</div>
-            <div class="value blue">${(pauloCoinGrid.SOL?.count || 0) + (androCoinGrid.SOL?.count || 0)}</div>
-          </div>
-          <div class="grid-perf-stat">
-            <div class="label">BTC PnL</div>
-            <div class="value ${colorClass((pauloCoinGrid.BTC?.pnl || 0) + (androCoinGrid.BTC?.pnl || 0) - (pauloCoinGrid.BTC?.fees || 0) - (androCoinGrid.BTC?.fees || 0))}">${$((pauloCoinGrid.BTC?.pnl || 0) + (androCoinGrid.BTC?.pnl || 0) - (pauloCoinGrid.BTC?.fees || 0) - (androCoinGrid.BTC?.fees || 0))}</div>
-          </div>
-          <div class="grid-perf-stat">
-            <div class="label">ETH PnL</div>
-            <div class="value ${colorClass((pauloCoinGrid.ETH?.pnl || 0) + (androCoinGrid.ETH?.pnl || 0) - (pauloCoinGrid.ETH?.fees || 0) - (androCoinGrid.ETH?.fees || 0))}">${$((pauloCoinGrid.ETH?.pnl || 0) + (androCoinGrid.ETH?.pnl || 0) - (pauloCoinGrid.ETH?.fees || 0) - (androCoinGrid.ETH?.fees || 0))}</div>
-          </div>
-          <div class="grid-perf-stat">
-            <div class="label">SOL PnL</div>
-            <div class="value ${colorClass((pauloCoinGrid.SOL?.pnl || 0) + (androCoinGrid.SOL?.pnl || 0) - (pauloCoinGrid.SOL?.fees || 0) - (androCoinGrid.SOL?.fees || 0))}">${$((pauloCoinGrid.SOL?.pnl || 0) + (androCoinGrid.SOL?.pnl || 0) - (pauloCoinGrid.SOL?.fees || 0) - (androCoinGrid.SOL?.fees || 0))}</div>
-          </div>
-          <div class="grid-perf-stat">
-            <div class="label">Fees Cumulés</div>
-            <div class="value red">-${totalFeesGrid.toFixed(2)}</div>
-          </div>
+          <div class="grid-perf-stat"><div class="label">Fills Grid</div><div class="value neutral">${tradesGrid}</div></div>
+          <div class="grid-perf-stat"><div class="label">BTC</div><div class="value blue">${coinGrid.BTC?.count || 0} fills</div></div>
+          <div class="grid-perf-stat"><div class="label">ETH</div><div class="value blue">${coinGrid.ETH?.count || 0} fills</div></div>
+          <div class="grid-perf-stat"><div class="label">SOL</div><div class="value blue">${coinGrid.SOL?.count || 0} fills</div></div>
+          <div class="grid-perf-stat"><div class="label">PnL Grid Net</div><div class="value ${colorClass(realizedPnlGrid)}">${$(realizedPnlGrid)}</div></div>
+          <div class="grid-perf-stat"><div class="label">Fees Grid</div><div class="value red">-${feesGrid.toFixed(4)}</div></div>
         </div>
         <div class="charts-two">
           <div class="chart-container"><h2>Fills par Jour (Grid Era)</h2><canvas id="gridFillsChart"></canvas></div>
@@ -596,48 +529,28 @@ async function loadDashboard() {
       <div class="section">
         <div class="section-title">📈 Évolution du Capital</div>
         <div class="chart-container">
-          <h2>Paulo vs Andro vs Total</h2>
           <canvas id="capitalChart"></canvas>
         </div>
       </div>
 
-      <!-- AGENTS -->
+      <!-- AGENT -->
       <div class="section">
-        <div class="section-title">🤖 Agents</div>
-        <div class="agent-grid">
-          <div class="agent-card paulo">
-            <div class="agent-header">
-              <div>
-                <div class="agent-name paulo">🧠 Paulo</div>
-                <div class="agent-role">Quant · Grid Engine</div>
-              </div>
-              <span class="badge badge-paulo">ACTIF</span>
+        <div class="section-title">🤖 Agent</div>
+        <div class="agent-card">
+          <div class="agent-header">
+            <div>
+              <div class="agent-name">🧠 Paulo</div>
+              <div class="agent-role">Quant · Grid Engine · BTC / ETH / SOL</div>
             </div>
-            <div class="agent-stats">
-              <div class="agent-stat"><div class="as-label">Capital</div><div class="as-value">${$(pauloEquity)}</div></div>
-              <div class="agent-stat"><div class="as-label">PnL Grid</div><div class="as-value ${colorClass(pauloRealizedPnlGrid)}">${$(pauloRealizedPnlGrid)}</div></div>
-              <div class="agent-stat"><div class="as-label">Marge</div><div class="as-value">${pauloMarginPct.toFixed(1)}%</div></div>
-              <div class="agent-stat"><div class="as-label">Fills Grid</div><div class="as-value">${Object.values(pauloDailyGrid).reduce((s, d) => s + d.count, 0)}</div></div>
-              <div class="agent-stat"><div class="as-label">PnL % All</div><div class="as-value ${colorClass(pauloEquity - PAULO_ALLOC)}">${pct((pauloEquity - PAULO_ALLOC) / PAULO_ALLOC * 100)}</div></div>
-              <div class="agent-stat"><div class="as-label">Positions</div><div class="as-value">${pauloPositions.length}</div></div>
-            </div>
+            <span class="badge badge-paulo">ACTIF</span>
           </div>
-          <div class="agent-card andro">
-            <div class="agent-header">
-              <div>
-                <div class="agent-name andro">⚡ Andro</div>
-                <div class="agent-role">Trader Autonome · Test</div>
-              </div>
-              <span class="badge badge-andro">ACTIF</span>
-            </div>
-            <div class="agent-stats">
-              <div class="agent-stat"><div class="as-label">Capital</div><div class="as-value">${$(androEquity)}</div></div>
-              <div class="agent-stat"><div class="as-label">PnL Grid</div><div class="as-value ${colorClass(androRealizedPnlGrid)}">${$(androRealizedPnlGrid)}</div></div>
-              <div class="agent-stat"><div class="as-label">Marge</div><div class="as-value">${androMarginPct.toFixed(1)}%</div></div>
-              <div class="agent-stat"><div class="as-label">Fills Grid</div><div class="as-value">${Object.values(androDailyGrid).reduce((s, d) => s + d.count, 0)}</div></div>
-              <div class="agent-stat"><div class="as-label">PnL % All</div><div class="as-value ${colorClass(androEquity - ANDRO_ALLOC)}">${pct((androEquity - ANDRO_ALLOC) / ANDRO_ALLOC * 100)}</div></div>
-              <div class="agent-stat"><div class="as-label">Positions</div><div class="as-value">${androPositions.length}</div></div>
-            </div>
+          <div class="agent-stats">
+            <div class="agent-stat"><div class="as-label">Capital</div><div class="as-value">${$(equity)}</div></div>
+            <div class="agent-stat"><div class="as-label">PnL Grid</div><div class="as-value ${colorClass(realizedPnlGrid)}">${$(realizedPnlGrid)}</div></div>
+            <div class="agent-stat"><div class="as-label">Marge</div><div class="as-value">${marginPct.toFixed(1)}%</div></div>
+            <div class="agent-stat"><div class="as-label">Fills Grid</div><div class="as-value">${tradesGrid}</div></div>
+            <div class="agent-stat"><div class="as-label">Ordres Actifs</div><div class="as-value">${totalGridOrders}/30</div></div>
+            <div class="agent-stat"><div class="as-label">Positions</div><div class="as-value">${positions.length}</div></div>
           </div>
         </div>
       </div>
@@ -645,47 +558,42 @@ async function loadDashboard() {
       <!-- POSITIONS -->
       <div class="section">
         <div class="section-title">📍 Positions Ouvertes</div>
-        ${allPositions.length > 0 ? `
+        ${positions.length > 0 ? `
         <table class="positions-table">
-          <thead><tr><th>Agent</th><th>Coin</th><th>Side</th><th>Size</th><th>Entry</th><th>uPnL</th><th>Lev</th><th>Context</th></tr></thead>
+          <thead><tr><th>Coin</th><th>Side</th><th>Size</th><th>Entry</th><th>uPnL</th><th>Lev</th><th>Context</th></tr></thead>
           <tbody>
-            ${allPositions.map(p => {
+            ${positions.map(p => {
               const szi = parseFloat(p.szi);
               const isLong = szi > 0;
               const upnl = parseFloat(p.unrealizedPnl);
               const lev = p.leverage ? (p.leverage.value + '×') : '—';
-              const tagClass = p.agent === 'PAULO' ? 'tag-paulo' : 'tag-andro';
-              const isGrid = p.agent === 'PAULO';
               return `<tr>
-                <td><span class="agent-tag ${tagClass}">${p.agent}</span></td>
                 <td><strong>${p.coin}</strong></td>
                 <td class="${isLong ? 'green' : 'red'}">${isLong ? 'LONG' : 'SHORT'}</td>
                 <td>${Math.abs(szi).toFixed(4)}</td>
                 <td>$${parseFloat(p.entryPx).toFixed(2)}</td>
                 <td class="${colorClass(upnl)}">${$(upnl)}</td>
                 <td>${lev}</td>
-                <td>${isGrid ? '<span class="agent-tag tag-grid">GRID</span>' : ''}</td>
+                <td><span class="tag-grid">GRID</span></td>
               </tr>`;
             }).join('')}
           </tbody>
         </table>` : `<div style="color:var(--text-muted);font-family:var(--mono);font-size:0.82rem;padding:14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);">Aucune position ouverte</div>`}
       </div>
 
-      <!-- CHARTS -->
+      <!-- ACTIVITY CHART -->
       <div class="section">
-        <div class="section-title">📊 Performance All-time</div>
+        <div class="section-title">📊 Activité All-time</div>
         <div class="charts-two">
-          <div class="chart-container"><h2>Activité Trading (fills/jour)</h2><canvas id="activityChart"></canvas></div>
-          <div class="chart-container"><h2>Répartition du Capital</h2><canvas id="capitalPie"></canvas></div>
+          <div class="chart-container"><h2>Fills par Jour</h2><canvas id="activityChart"></canvas></div>
+          <div class="chart-container"><h2>Marge Utilisée</h2><canvas id="marginChart"></canvas></div>
         </div>
-        <div class="chart-container"><h2>Marge Utilisée</h2><canvas id="marginChart"></canvas></div>
       </div>
     `;
 
     // === CHARTS ===
     const ttOpts = { backgroundColor: '#1a1b25', borderColor: '#2a2b38', borderWidth: 1, titleFont: { family: "'Inter'" }, bodyFont: { family: "'JetBrains Mono'" } };
 
-    // Grid Fills Chart
     new Chart(document.getElementById('gridFillsChart'), {
       type: 'bar',
       data: {
@@ -696,24 +604,21 @@ async function loadDashboard() {
           { label: 'SOL', data: solFillsPerDay, backgroundColor: 'rgba(168,85,247,0.6)', borderRadius: 6 }
         ]
       },
-      options: { 
+      options: {
         responsive: true,
         plugins: { legend: { labels: { color: tickColor, usePointStyle: true } }, tooltip: ttOpts },
-        scales: { 
+        scales: {
           x: { stacked: true, ticks: { color: tickColor }, grid: { color: gridColor } },
           y: { stacked: true, ticks: { color: tickColor }, grid: { color: gridColor } }
         }
       }
     });
 
-    // Grid PnL Chart
     new Chart(document.getElementById('gridPnlChart'), {
       type: 'line',
       data: {
         labels: gridDateLabels,
-        datasets: [
-          { label: 'PnL Cumulé', data: gridCumulativePnl, borderColor: GREEN, backgroundColor: 'rgba(16,185,129,0.1)', fill: true, tension: 0.3, pointRadius: 4, borderWidth: 2.5 }
-        ]
+        datasets: [{ label: 'PnL Cumulé', data: gridCumulativePnl, borderColor: GREEN, backgroundColor: 'rgba(16,185,129,0.1)', fill: true, tension: 0.3, pointRadius: 4, borderWidth: 2.5 }]
       },
       options: {
         responsive: true,
@@ -722,16 +627,13 @@ async function loadDashboard() {
       }
     });
 
-    // Capital Chart with Grid Era marker
     const gridStartIndex = dates.findIndex(d => d === GRID_START_DATE.toISOString().slice(0, 10));
     new Chart(document.getElementById('capitalChart'), {
       type: 'line',
       data: {
         labels: dateLabels,
         datasets: [
-          { label: 'Total', data: totalCurve, borderColor: GREEN, backgroundColor: 'rgba(16,185,129,0.08)', fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: GREEN, borderWidth: 2.5 },
-          { label: 'Paulo', data: pauloCurve, borderColor: BLUE, backgroundColor: 'rgba(59,130,246,0.05)', fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: BLUE, borderWidth: 2 },
-          { label: 'Andro', data: androCurve, borderColor: PURPLE, backgroundColor: 'rgba(168,85,247,0.05)', fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: PURPLE, borderWidth: 2 },
+          { label: 'Capital', data: capitalCurve, borderColor: GREEN, backgroundColor: 'rgba(16,185,129,0.08)', fill: true, tension: 0.3, pointRadius: 3, pointBackgroundColor: GREEN, borderWidth: 2.5 },
           { label: 'Départ $317.76', data: dateLabels.map(() => TOTAL_DEPOSIT), borderColor: '#374151', borderDash: [6, 4], pointRadius: 0, borderWidth: 1, fill: false }
         ]
       },
@@ -740,28 +642,7 @@ async function loadDashboard() {
         interaction: { mode: 'index', intersect: false },
         plugins: {
           legend: { labels: { color: tickColor, usePointStyle: true, pointStyle: 'circle', padding: 16, font: { family: "'Inter'", size: 11 } } },
-          tooltip: { ...ttOpts, callbacks: { label: ctx => `${ctx.dataset.label}: $${ctx.parsed.y.toFixed(2)}` } },
-          annotation: gridStartIndex >= 0 ? {
-            annotations: {
-              gridEraLine: {
-                type: 'line',
-                xMin: gridStartIndex,
-                xMax: gridStartIndex,
-                borderColor: ORANGE,
-                borderWidth: 2,
-                borderDash: [8, 4],
-                label: {
-                  display: true,
-                  content: 'Grid Era',
-                  position: 'start',
-                  backgroundColor: 'rgba(245,158,11,0.8)',
-                  color: '#0a0b0f',
-                  font: { family: "'JetBrains Mono'", size: 10, weight: 'bold' },
-                  padding: 4
-                }
-              }
-            }
-          } : {}
+          tooltip: { ...ttOpts, callbacks: { label: ctx => `${ctx.dataset.label}: $${ctx.parsed.y.toFixed(2)}` } }
         },
         scales: { x: { ticks: { color: tickColor }, grid: { color: gridColor } }, y: { ticks: { color: tickColor, callback: v => '$' + v }, grid: { color: gridColor } } }
       },
@@ -778,33 +659,27 @@ async function loadDashboard() {
           ctx.moveTo(xPos, top);
           ctx.lineTo(xPos, bottom);
           ctx.stroke();
+          ctx.fillStyle = 'rgba(245,158,11,0.85)';
+          ctx.font = "bold 10px 'JetBrains Mono'";
+          ctx.fillText('Grid Era', xPos + 6, top + 14);
           ctx.restore();
         }
       }] : []
     });
 
-    new Chart(document.getElementById('capitalPie'), {
-      type: 'doughnut',
-      data: { labels: ['Paulo', 'Andro'], datasets: [{ data: [pauloEquity, androEquity], backgroundColor: [BLUE, PURPLE], borderColor: '#12131a', borderWidth: 3 }] },
-      options: { responsive: true, cutout: '60%', plugins: { legend: { labels: { color: tickColor, usePointStyle: true, padding: 16 }, position: 'bottom' }, tooltip: { ...ttOpts, callbacks: { label: ctx => `${ctx.label}: $${ctx.parsed.toFixed(2)} (${((ctx.parsed / totalEquity) * 100).toFixed(0)}%)` } } } }
-    });
-
     new Chart(document.getElementById('activityChart'), {
       type: 'bar',
-      data: { labels: dateLabels, datasets: [
-        { label: 'Paulo', data: pauloActivity, backgroundColor: 'rgba(59,130,246,0.6)', borderRadius: 6 },
-        { label: 'Andro', data: androActivity, backgroundColor: 'rgba(168,85,247,0.6)', borderRadius: 6 }
-      ]},
-      options: { responsive: true, plugins: { legend: { labels: { color: tickColor, usePointStyle: true, pointStyle: 'circle' } }, tooltip: ttOpts }, scales: { x: { ticks: { color: tickColor }, grid: { color: gridColor } }, y: { ticks: { color: tickColor }, grid: { color: gridColor } } } }
+      data: { labels: dateLabels, datasets: [{ label: 'Fills', data: activity, backgroundColor: 'rgba(59,130,246,0.5)', borderRadius: 4 }] },
+      options: { responsive: true, plugins: { legend: { labels: { color: tickColor } }, tooltip: ttOpts }, scales: { x: { ticks: { color: tickColor }, grid: { color: gridColor } }, y: { ticks: { color: tickColor }, grid: { color: gridColor } } } }
     });
 
     new Chart(document.getElementById('marginChart'), {
       type: 'bar',
-      data: { labels: ['Paulo', 'Andro'], datasets: [
-        { label: 'Marge Utilisée', data: [pauloMarginPct, androMarginPct], backgroundColor: ['rgba(59,130,246,0.6)', 'rgba(168,85,247,0.6)'], borderRadius: 8 },
-        { label: 'Seuil Danger (75%)', data: [75, 75], backgroundColor: 'rgba(239,68,68,0.15)', borderRadius: 0 }
+      data: { labels: ['Paulo'], datasets: [
+        { label: 'Marge', data: [marginPct], backgroundColor: 'rgba(59,130,246,0.6)', borderRadius: 8 },
+        { label: 'Seuil (75%)', data: [75], backgroundColor: 'rgba(239,68,68,0.15)', borderRadius: 0 }
       ]},
-      options: { responsive: true, plugins: { legend: { labels: { color: tickColor } }, tooltip: ttOpts }, scales: { x: { stacked: false, ticks: { color: tickColor }, grid: { color: gridColor } }, y: { max: 100, ticks: { color: tickColor, callback: v => v + '%' }, grid: { color: gridColor } } } }
+      options: { responsive: true, indexAxis: 'y', plugins: { legend: { labels: { color: tickColor } }, tooltip: ttOpts }, scales: { x: { max: 100, ticks: { color: tickColor, callback: v => v + '%' }, grid: { color: gridColor } }, y: { ticks: { color: tickColor }, grid: { color: gridColor } } } }
     });
 
   } catch (err) {
